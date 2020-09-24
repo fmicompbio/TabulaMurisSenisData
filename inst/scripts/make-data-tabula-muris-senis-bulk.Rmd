@@ -1,0 +1,41 @@
+---
+title: "Download and preprocess the ..."
+author: ""
+date: ""
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(width = 100)
+```
+
+
+# Downloading the h5 file
+
+(accessed WHEN)
+
+...
+
+# Loading the data and preprocessing
+
+...
+
+Writing out the object as a rectangular h5 file
+
+...
+
+# Generating and saving the `SingleCellExperiment` object
+
+...
+
+# Session info {-}
+
+```{r}
+sessionInfo()
+```
+
