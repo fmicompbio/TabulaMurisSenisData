@@ -1,0 +1,33 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+---
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+# TabulaMurisSenisData 
+
+To be available at https://bioconductor.org/packages/TabulaMurisSenisData/.
+
+This is an R/[ExperimentHub](https://bioconductor.org/packages/release/bioc/html/ExperimentHub.html) package for accessing data from...
+
+## Some additional information
+
+- This current release includes the following datasets:
+
+```{r, eval = FALSE, echo = FALSE}
+knitr::kable(
+  data.frame(
+    `dataset ID` = c(),
+    `subset` = c(), 
+    `species` = c(), 
+    `technology` = c(),
+    `cell number` = c(),
+    `description` = c()
+    )
+  )
+# maybe put a screenshot of iSEE viewing tSNE of each set?
+```
+
