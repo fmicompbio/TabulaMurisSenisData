@@ -1,12 +1,13 @@
 ---
-title: "Download and preprocess the ..."
-author: ""
-date: ""
-output: 
+title: "Download and preprocess the Tabula Muris Senis bulk data"
+author: "Charlotte Soneson"
+date: "2020-09-29"
+output:
   html_document:
     toc: true
     toc_float: true
-  
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -14,24 +15,107 @@ knitr::opts_chunk$set(echo = TRUE)
 options(width = 100)
 ```
 
+# Loading required packages
 
-# Downloading the h5 file
+```{r}
+suppressPackageStartupMessages({
+    library(readr)
+    library(SummarizedExperiment)
+    library(SingleCellExperiment)
+    library(rtracklayer)
+    library(BiocFileCache)
+})
+```
 
-(accessed WHEN)
 
-...
+# Downloading the csv files
+
+The csv files with counts and metadata were downloaded from the Gene Expression Omnibus (accession number [GSE132040](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE132040)) on September 29, 2020.
+
+```{r}
+bfc <- BiocFileCache("bulk-raw-data", ask = FALSE)
+count_data <- bfcrpath(bfc, "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE132nnn/GSE132040/suppl/GSE132040_190214_A00111_0269_AHH3J3DSXX_190214_A00111_0270_BHHMFWDSXX.csv.gz")
+meta_data <- bfcrpath(bfc, "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE132nnn/GSE132040/suppl/GSE132040_MACA_Bulk_metadata.csv.gz")
+gencode_gtf <- bfcrpath(bfc, "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M19/gencode.vM19.annotation.gtf.gz")
+```
 
 # Loading the data and preprocessing
 
-...
+Next, we load the count matrix and the metadata. The count matrix contains also some summaries from HTSeq; we'll move those to the metadata. 
 
-Writing out the object as a rectangular h5 file
+```{r}
+## Read count matrix
+counts <- as.data.frame(readr::read_csv(
+    count_data, 
+    col_names = TRUE,
+    col_types = cols(.default = col_double(), gene = col_character())
+))
+dim(counts)
+head(counts[, 1:5])
+tail(counts[, 1:5])  ## need to remove the last few rows; not genes
 
-...
+rownames(counts) <- counts$gene
+counts$gene <- NULL
+colnames(counts) <- gsub("\\.gencode\\.vM19$", "", colnames(counts))
 
-# Generating and saving the `SingleCellExperiment` object
+htseq_stats <- counts[grep("^__", rownames(counts)), ]
+dim(htseq_stats)
+counts <- counts[grep("^__", rownames(counts), invert = TRUE), ]
+dim(counts)
 
-...
+counts <- as.matrix(counts)
+
+## Read metadata
+meta <- readr::read_csv(
+    meta_data, 
+    col_names = TRUE
+)
+dim(meta)
+head(as.data.frame(meta))
+
+## Add HTSeq stats to metadata
+stopifnot(all(meta$`Sample name` %in% colnames(htseq_stats)))
+htseq_stats <- t(htseq_stats[, match(meta$`Sample name`, colnames(htseq_stats))])
+stopifnot(all(meta$`Sample name` == rownames(htseq_stats)))
+meta <- cbind(meta, htseq_stats)
+```
+
+# Generating the `SingleCellExperiment` object
+
+```{r}
+stopifnot(all(meta$`Sample name` %in% colnames(counts)))
+counts <- counts[, match(meta$`Sample name`, colnames(counts))]
+stopifnot(all(meta$`Sample name` == colnames(counts)))
+
+se <- SingleCellExperiment(
+    assays = list(counts = counts),
+    colData = meta
+)
+```
+
+# Adding information from Gencode vM19 to `rowData`
+
+```{r}
+gtf <- rtracklayer::import(gencode_gtf)
+gtf <- subset(gtf, type == "gene")
+stopifnot(all(rownames(se) %in% gtf$gene_name))
+gtf <- gtf[match(rownames(se), gtf$gene_name)]
+mcols(gtf) <- mcols(gtf)[, c("source", "type", "gene_id", 
+                             "gene_type", "gene_name", 
+                             "level", "havana_gene", "tag")]
+names(gtf) <- gtf$gene_name
+rowRanges(se) <- gtf
+```
+
+# Saving the components of the `SingleCellExperiment` object
+
+```{r}
+outpath <- file.path("TabulaMurisSenisData", "tabula-muris-senis-bulk")
+dir.create(outpath, showWarnings = FALSE, recursive = TRUE)
+saveRDS(rowRanges(se), file = file.path(outpath, "rowranges.rds"))
+saveRDS(colData(se), file = file.path(outpath, "coldata.rds"))
+saveRDS(assay(se, "counts"), file = file.path(outpath, "counts.rds"))
+```
 
 # Session info {-}
 

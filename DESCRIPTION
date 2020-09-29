@@ -18,7 +18,8 @@ LazyData: true
 RoxygenNote: 7.1.1
 Imports: 
     ExperimentHub,
-    utils
+    utils,
+    SingleCellExperiment
 URL: https://github.com/fmicompbio/TabulaMurisSenisData
 BugReports: https://github.com/fmicompbio/TabulaMurisSenisData/issues
 VignetteBuilder: knitr
