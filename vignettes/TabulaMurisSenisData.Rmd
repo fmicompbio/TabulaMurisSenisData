@@ -14,6 +14,26 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, message = FALSE}
+library(SingleCellExperiment)
 library(TabulaMurisSenisData)
 ```
+
+# Introduction
+
+This package provides access to the processed bulk and single-cell RNA-seq data 
+from the _Tabula Muris Senis_ data set [REFs]. The processed data was 
+downloaded from GEO [links] and packaged into `SingleCellExperiment` objects 
+for easy access from R. 
+
+# Bulk RNA-seq data
+
+```{r}
+tms_bulk <- TabulaMurisSenisBulk()
+tms_bulk
+```
+
+
+```{r}
+```
+

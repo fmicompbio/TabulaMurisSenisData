@@ -78,6 +78,9 @@ stopifnot(all(meta$`Sample name` %in% colnames(htseq_stats)))
 htseq_stats <- t(htseq_stats[, match(meta$`Sample name`, colnames(htseq_stats))])
 stopifnot(all(meta$`Sample name` == rownames(htseq_stats)))
 meta <- cbind(meta, htseq_stats)
+
+## Extract the organ information
+meta$organ <- gsub("_*[0-9]+$", "", meta$`source name`)
 ```
 
 # Generating the `SingleCellExperiment` object

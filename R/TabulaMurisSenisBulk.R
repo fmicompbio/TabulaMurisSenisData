@@ -6,6 +6,11 @@
 #' @author Charlotte Soneson
 #'
 #' @references
+#' Schaum et al.: The murine transcriptome reveals global aging nodes with
+#' organ-specific phase and amplitude. bioRxiv doi:10.1101/662254 (2019).
+#'
+#' The Tabula Muris Consortium: A single-cell transcriptomic atlas
+#' characterizes ageing tissues in the mouse. Nature 583:590–595 (2020).
 #'
 #' @examples
 #' sce <- TabulaMurisSenisBulk()
