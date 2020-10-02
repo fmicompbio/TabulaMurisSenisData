@@ -69,7 +69,7 @@ exit()
 
 ```{r eval=FALSE}
 ## Once `zellkonverter` is in the latest bioconductor release this chunk can be evaluated
-library(zellkonverter)
+library(zellkonverter) 
 library(SingleCellExperiment)
 
 ## Read as SCE and save
