@@ -1,12 +1,13 @@
 ---
-title: "Download and preprocess the ..."
-author: ""
-date: ""
-output: 
+title: "Download and preprocess the Tabula Muris Senis droplet data"
+author: "Dania Machlab"
+date: "2020-10-02"
+output:
   html_document:
     toc: true
     toc_float: true
-  
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -14,24 +15,129 @@ knitr::opts_chunk$set(echo = TRUE)
 options(width = 100)
 ```
 
+# Loading required packages
 
-# Downloading the h5 file
+```{r}
+suppressPackageStartupMessages({
+    library(BiocFileCache)
+    library(SingleCellExperiment)
+    library(HDF5Array)
+    library(utils)
+    # library(zellkonverter)
+})
+```
 
-(accessed WHEN)
+# Downloading the files
 
-...
+The files with counts and metadata were downloaded from the Gene Expression Omnibus (accession number [GSM4505404](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4505404)) on October 02, 2020.
 
-# Loading the data and preprocessing
+```{r download}
+bfc <- BiocFileCache("droplet-raw-data", ask = FALSE)
+meta_data_csv <- bfcrpath(bfc, "https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4505nnn/GSM4505404/suppl/GSM4505404_tabula-muris-senis-droplet-official-raw-obj-metadata.csv.gz")
+count_data_loom <- bfcrpath(bfc, "https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4505nnn/GSM4505404/suppl/GSM4505404_tabula-muris-senis-droplet-official-raw-obj.loom.gz")
+count_data_h5ad <- bfcrpath(bfc, "https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4505nnn/GSM4505404/suppl/GSM4505404_tabula-muris-senis-droplet-official-raw-obj.h5ad.gz")
+```
 
-...
+```{bash eval=FALSE}
+## unzip loom file (couldn't get this to work in R or python): has to be unzipped to be read in python by scanpy
+gunzip droplet-raw-data/8cb51e29d2bc_GSM4505404_tabula-muris-senis-droplet-official-raw-obj.loom.gz
+```
 
-Writing out the object as a rectangular h5 file
+# Saving the `loom` as an `h5ad` file in `python`
 
-...
+We had problems directly reading in the `h5ad` file into R with `zellkonverter`. This is fixed when we store the `loom` file as an `h5ad` in `python`, and then use `zellkonverter` in R to read in a `SingleCellExperiment` object. We used Anaconda3 version 5.3.0.
 
-# Generating and saving the `SingleCellExperiment` object
+```{python eval=FALSE}
+## Libs
+import scanpy as sc
+import os
+import fnmatch
 
-...
+## Find loom file
+x = [os.path.join(r,file) for r,d,f in os.walk("droplet-raw-data/") for file in f]
+for file_name in x:
+    if fnmatch.fnmatch(file_name, '*.loom'):
+        loom_file=file_name
+
+## Read loom file and save as H5ad
+ad=sc.read_loom(loom_file)
+ad.write("droplet-raw-data/tabula-muris-senis-droplet.h5ad")
+exit()
+```
+
+# Processing and saving
+
+```{r eval=FALSE}
+## Once `zellkonverter` is in the latest bioconductor release this chunk can be evaluated
+library(zellkonverter)
+library(SingleCellExperiment)
+
+## Read as SCE and save
+sce <- zellkonverter::readH5AD(file = "droplet-raw-data/tabula-muris-senis-droplet.h5ad")
+saveRDS(sce, file.path("droplet-raw-data", "tabula-muris-senis-droplet-SCE.rds"))
+```
+
+
+```{r read_in_sce}
+sce <- readRDS("droplet-raw-data/tabula-muris-senis-droplet-SCE.rds")
+sce
+```
+
+
+```{r colData}
+## Read in meta data file
+meta <- read.csv(meta_data_csv, header = TRUE)
+
+## check all colData(sce)==metadata
+all(meta$index==colnames(sce))
+
+rownames(meta) <- meta$index
+meta <- meta[, -grep("index", colnames(meta))]
+all(colnames(meta)==colnames(colData(sce))) 
+colData_df <- as.data.frame(colData(sce))
+
+for(i in 1:ncol(meta)){
+    print(all(meta[, i]==colData_df[, i], na.rm = TRUE))
+}
+
+## Create output folder
+outpath <- file.path("TabulaMurisSenisData", "tabula-muris-senis-droplet")
+dir.create(outpath, showWarnings = FALSE, recursive = TRUE)
+
+## Save
+saveRDS(as.data.frame(colData(sce)), file = file.path(outpath, "colData.rds"))
+
+```
+
+
+
+```{r rowData}
+## Save
+outpath <- file.path("TabulaMurisSenisData", "tabula-muris-senis-droplet")
+saveRDS(as.data.frame(rowData(sce)), file = file.path(outpath, "rowData.rds"))
+```
+
+
+We read the counts matrix from the `loom` file as a `DelayedArray` and save it as an `HDF5` file, rather than storing the sparse matrix from the `SingleCellExperiment` as an `HDF5` file, as this is much quicker to run.
+
+
+```{r counts}
+outpath <- file.path("TabulaMurisSenisData", "tabula-muris-senis-droplet")
+
+## Read in raw counts as DelayedArray
+loom_file <- list.files("droplet-raw-data", pattern = "loom", full.names = TRUE)
+delayed_counts <- HDF5Array::HDF5Array(filepath = loom_file, name = "matrix") 
+delayed_counts
+
+## Save as HDF5 file (takes ~ 12 min)
+if(file.exists(file.path(outpath, "counts.h5"))){file.remove(file.path(outpath, "counts.h5"))} # if file already exists this will error
+options(DelayedArray.block.size=1e9) # 1GB block size.
+mat.out <- writeHDF5Array(x = delayed_counts, 
+               filepath = file.path(outpath, "counts.h5"), 
+               name = "counts", 
+               chunkdim = HDF5Array::getHDF5DumpChunkDim(dim(delayed_counts)))
+```
+
 
 # Session info {-}
 
