@@ -19,129 +19,136 @@ options(width = 100)
 
 ```{r}
 suppressPackageStartupMessages({
-    library(BiocFileCache)
-    library(SingleCellExperiment)
-    library(HDF5Array)
     library(utils)
-    # library(zellkonverter)
+    library(HDF5Array)
+    library(SingleCellExperiment)
 })
 ```
 
-# Downloading the files
+# Downloading the `h5ad` files from figshare
 
-The files with counts and metadata were downloaded from the Gene Expression Omnibus (accession number [GSM4505404](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4505404)) on October 02, 2020.
+The following files were downloaded on Dec 2, 2020:
 
-```{r download}
-bfc <- BiocFileCache("droplet-raw-data", ask = FALSE)
-meta_data_csv <- bfcrpath(bfc, "https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4505nnn/GSM4505404/suppl/GSM4505404_tabula-muris-senis-droplet-official-raw-obj-metadata.csv.gz")
-count_data_loom <- bfcrpath(bfc, "https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4505nnn/GSM4505404/suppl/GSM4505404_tabula-muris-senis-droplet-official-raw-obj.loom.gz")
-count_data_h5ad <- bfcrpath(bfc, "https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4505nnn/GSM4505404/suppl/GSM4505404_tabula-muris-senis-droplet-official-raw-obj.h5ad.gz")
+[The h5ad file with the raw counts](https://figshare.com/articles/dataset/Processed_files_to_use_with_scanpy_/8273102?file=23938934)
+
+[The h5ad file with the processed counts, and additional reduced dimensionalities](https://figshare.com/articles/dataset/Processed_files_to_use_with_scanpy_/8273102?file=23936684)
+
+Remarks on how the raw counts were processed to obtain the processed counts being downloaded can be found in [this](https://github.com/czbiohub/tabula-muris-senis/issues/19) GitHub issue we opened.
+
+
+```{r download, eval=FALSE}
+## Create data dirs
+dir.create("droplet-raw-data", showWarnings = FALSE)
+dir.create("droplet-raw-data/raw", showWarnings = FALSE, recursive = TRUE)
+dir.create("droplet-raw-data/processed", showWarnings = FALSE, recursive = TRUE)
+dir.create("TabulaMurisSenisData/tabula-muris-senis-droplet", showWarnings = FALSE, recursive = TRUE)
+
+## Download data (set timeout time to 500 sec, default is 60 sec)
+url_raw="https://ndownloader.figshare.com/files/23938934"
+url_processed="https://ndownloader.figshare.com/files/23936684"
+
+options(timeout=500)
+download.file(url = url_raw, destfile = file.path("droplet-raw-data", "raw", "raw.h5ad"))
+download.file(url = url_processed, destfile = file.path("droplet-raw-data", "processed", "processed.h5ad"))
 ```
 
-```{bash eval=FALSE}
-## unzip loom file (couldn't get this to work in R or python): has to be unzipped to be read in python by scanpy
-gunzip droplet-raw-data/8cb51e29d2bc_GSM4505404_tabula-muris-senis-droplet-official-raw-obj.loom.gz
-```
 
-# Saving the `loom` as an `h5ad` file in `python`
+# Saving as `loom` and `csv` files in `python`
 
-We had problems directly reading in the `h5ad` file into R with `zellkonverter`. This is fixed when we store the `loom` file as an `h5ad` in `python`, and then use `zellkonverter` in R to read in a `SingleCellExperiment` object. We used Anaconda3 version 5.3.0.
+We save the count matrices as loom files, and the metadata as csv files in `python`. The reason for this is that due to version incompatibilities, we cannot directly load the `h5ad` files into `R`.
 
 ```{python eval=FALSE}
-## Libs
 import scanpy as sc
-import os
-import fnmatch
 
-## Find loom file
-x = [os.path.join(r,file) for r,d,f in os.walk("droplet-raw-data/") for file in f]
-for file_name in x:
-    if fnmatch.fnmatch(file_name, '*.loom'):
-        loom_file=file_name
+## Read h5ad files
+ad_raw=sc.read_h5ad("droplet-raw-data/raw/raw.h5ad")
+ad_processed=sc.read_h5ad("droplet-raw-data/processed/processed.h5ad")
 
-## Read loom file and save as H5ad
-ad=sc.read_loom(loom_file)
-ad.write("droplet-raw-data/tabula-muris-senis-droplet.h5ad")
-exit()
-```
+## Save rowData, colData, and metadata as csv files
+# ... obs.csv is our colData
+# ... var.csv is our rowData
+# ... obsm.csv is : 1) the PCA (50 PCs) on the cells from col 1:50
+# ... ...           2) the UMAP on the cells in cols 51 and 52
+ad_raw.write_csvs("droplet-raw-data/raw")
+ad_processed.write_csvs("droplet-raw-data/processed")
 
-# Processing and saving
-
-```{r eval=FALSE}
-## Once `zellkonverter` is in the latest bioconductor release this chunk can be evaluated
-library(zellkonverter) 
-library(SingleCellExperiment)
-
-## Read as SCE and save
-sce <- zellkonverter::readH5AD(file = "droplet-raw-data/tabula-muris-senis-droplet.h5ad")
-saveRDS(sce, file.path("droplet-raw-data", "tabula-muris-senis-droplet-SCE.rds"))
+## Save count matrices as loom files
+ad_raw.write_loom("droplet-raw-data/raw/raw.loom", write_obsm_varm=False)
+ad_processed.write_loom("droplet-raw-data/processed/processed.loom", write_obsm_varm=False)
 ```
 
 
-```{r read_in_sce}
-sce <- readRDS("droplet-raw-data/tabula-muris-senis-droplet-SCE.rds")
-sce
+# Processing and saving in `R`
+
+We read in the count matrices as delayed arrays, and save as HDF5 files. We read in the metadata files, organize them, and save them as `csv` files.
+
+```{r counts, eval=FALSE}
+## Read in as DelayedArray
+counts_raw <- HDF5Array::HDF5Array(filepath = "droplet-raw-data/raw/raw.loom", name = "matrix")
+counts_processed <- HDF5Array::HDF5Array(filepath = "droplet-raw-data/processed/processed.loom", name = "matrix")
+
+## transpose to have genes x cells
+counts_raw <- t(counts_raw)
+counts_processed <- t(counts_processed)
+
+## Save (takes ~ 20-30 min per matrix)
+options(DelayedArray.block.size=1e10) # 1GB block size.
+mat_raw <- writeHDF5Array(x = counts_raw, 
+                          filepath = file.path("TabulaMurisSenisData", "tabula-muris-senis-droplet", "counts.h5"), 
+                          name = "counts", 
+                          chunkdim = HDF5Array::getHDF5DumpChunkDim(dim(counts_raw)))
+
+mat_processed <- writeHDF5Array(x = counts_processed, 
+                                filepath = file.path("TabulaMurisSenisData", "tabula-muris-senis-droplet", "processed_counts.h5"), 
+                                name = "processed_counts", 
+                                chunkdim = HDF5Array::getHDF5DumpChunkDim(dim(counts_processed)))
+```
+
+The raw and processed h5ad files from figshare have the cells and genes in the same order. The rawData and colData matrices are identical, except the processed one has some additional columns, which is why we include them.
+
+```{r rowData}
+## Read in csv
+rowData <- utils::read.table("droplet-raw-data/processed/var.csv", sep = ",", header = TRUE)
+
+## Save
+saveRDS(rowData, "TabulaMurisSenisData/tabula-muris-senis-droplet/rowData.rds")
 ```
 
 
 ```{r colData}
-## Read in meta data file
-meta <- read.csv(meta_data_csv, header = TRUE)
+## Read in csv
+colData <- utils::read.table("droplet-raw-data/processed/obs.csv", sep = ",", header = TRUE)
 
-## check all colData(sce)==metadata
-all(meta$index==colnames(sce))
-
-rownames(meta) <- meta$index
-meta <- meta[, -grep("index", colnames(meta))]
-all(colnames(meta)==colnames(colData(sce))) 
-colData_df <- as.data.frame(colData(sce))
-
-for(i in 1:ncol(meta)){
-    print(all(meta[, i]==colData_df[, i], na.rm = TRUE))
-}
-
-## Create output folder
-outpath <- file.path("TabulaMurisSenisData", "tabula-muris-senis-droplet")
-dir.create(outpath, showWarnings = FALSE, recursive = TRUE)
+## add tissue cols as in (https://tabula-muris-senis.ds.czbiohub.org)
+tissue_cols <- read.csv("droplet-raw-data/processed/uns/tissue_colors.csv", header = FALSE)[,1]
+names(tissue_cols) <- unique(colData$tissue)
+tissue_cols
+m <- match(colData$tissue, names(tissue_cols))
+colData$tissue_col <- tissue_cols[as.factor(colData$tissue)]
 
 ## Save
-saveRDS(as.data.frame(colData(sce)), file = file.path(outpath, "colData.rds"))
-
+saveRDS(colData, "TabulaMurisSenisData/tabula-muris-senis-droplet/colData.rds")
 ```
 
+We read in the PCA and UMAP from the processed data and save them as `rds` files.
 
+```{r reduced_dims}
+## Read csv
+pca_and_umap <- read.table("droplet-raw-data/processed/obsm.csv", sep=",", header = TRUE)
 
-```{r rowData}
+## Extract matrices
+umap <- as.matrix(pca_and_umap[, grep("umap", colnames(pca_and_umap), ignore.case = TRUE)])
+pca <- as.matrix(pca_and_umap[, grep("pc", colnames(pca_and_umap), ignore.case = TRUE)])
+
 ## Save
-outpath <- file.path("TabulaMurisSenisData", "tabula-muris-senis-droplet")
-saveRDS(as.data.frame(rowData(sce)), file = file.path(outpath, "rowData.rds"))
+saveRDS(umap, "TabulaMurisSenisData/tabula-muris-senis-droplet/umap.rds")
+saveRDS(pca, "TabulaMurisSenisData/tabula-muris-senis-droplet/pca.rds")
 ```
 
+# Session
 
-We read the counts matrix from the `loom` file as a `DelayedArray` and save it as an `HDF5` file, rather than storing the sparse matrix from the `SingleCellExperiment` as an `HDF5` file, as this is much quicker to run.
-
-
-```{r counts}
-outpath <- file.path("TabulaMurisSenisData", "tabula-muris-senis-droplet")
-
-## Read in raw counts as DelayedArray
-loom_file <- list.files("droplet-raw-data", pattern = "loom", full.names = TRUE)
-delayed_counts <- HDF5Array::HDF5Array(filepath = loom_file, name = "matrix") 
-delayed_counts
-
-## Save as HDF5 file (takes ~ 12 min)
-if(file.exists(file.path(outpath, "counts.h5"))){file.remove(file.path(outpath, "counts.h5"))} # if file already exists this will error
-options(DelayedArray.block.size=1e9) # 1GB block size.
-mat.out <- writeHDF5Array(x = delayed_counts, 
-               filepath = file.path(outpath, "counts.h5"), 
-               name = "counts", 
-               chunkdim = HDF5Array::getHDF5DumpChunkDim(dim(delayed_counts)))
-```
-
-
-# Session info {-}
-
-```{r}
+```{r session}
+date()
 sessionInfo()
 ```
 
