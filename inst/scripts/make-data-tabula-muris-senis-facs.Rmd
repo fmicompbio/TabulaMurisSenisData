@@ -1,12 +1,13 @@
 ---
-title: "Download and preprocess the ..."
-author: ""
-date: ""
-output: 
+title: "Download and preprocess the Tabula Muris Senis facs data"
+author: "Dania Machlab"
+date: "2020-12-03"
+output:
   html_document:
     toc: true
     toc_float: true
-  
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -14,28 +15,136 @@ knitr::opts_chunk$set(echo = TRUE)
 options(width = 100)
 ```
 
+# Loading required packages
 
-# Downloading the h5 file
 
-(accessed WHEN)
+```{r libraries}
+suppressPackageStartupMessages({
+    library(utils)
+    library(HDF5Array)
+    library(SingleCellExperiment)
+})
+```
 
-...
 
-# Loading the data and preprocessing
+# Downloading the `h5ad` files from figshare
 
-...
+The following files were downloaded on Dec 3, 2020:
 
-Writing out the object as a rectangular h5 file
+[The h5ad file with the raw counts](https://figshare.com/articles/dataset/Processed_files_to_use_with_scanpy_/8273102?file=23939711)
 
-...
+[The h5ad file with the processed counts, and additional reduced dimensionalities](https://figshare.com/articles/dataset/Processed_files_to_use_with_scanpy_/8273102?file=23937842)
 
-# Generating and saving the `SingleCellExperiment` object
+```{r download, eval=FALSE}
+## Create data dirs
+dir.create("facs-raw-data")
+dir.create("facs-raw-data/raw", showWarnings = FALSE, recursive = TRUE)
+dir.create("facs-raw-data/processed", showWarnings = FALSE, recursive = TRUE)
+dir.create("TabulaMurisSenisData/tabula-muris-senis-facs", showWarnings = FALSE, recursive = TRUE)
 
-...
+## Download data (set timeout time to 360 sec, default is 60 sec)
+url_raw="https://ndownloader.figshare.com/files/23939711"
+url_processed="https://ndownloader.figshare.com/files/23937842"
 
-# Session info {-}
+options(timeout=360)
+download.file(url = url_raw, destfile = file.path("facs-raw-data", "raw", "raw.h5ad"))
+download.file(url = url_processed, destfile = file.path("facs-raw-data", "processed", "processed.h5ad"))
+```
 
-```{r}
+# Saving as `loom` and `csv` files in `python`
+
+We save the count matrices as loom files, and the metadata as csv files in `python`. The reason for this is that due to version incompatibilities, we cannot directly load the `h5ad` files into `R`.
+
+```{python eval=FALSE}
+import scanpy as sc
+
+## Read h5ad files
+ad_raw=sc.read_h5ad("facs-raw-data/raw/raw.h5ad")
+ad_processed=sc.read_h5ad("facs-raw-data/processed/processed.h5ad")
+
+## Save rowData, colData, and metadata as csv files
+# ... obs.csv is our colData
+# ... var.csv is our rowData
+# ... obsm.csv is : 1) the PCA (50 PCs) on the cells from col 1:50
+# ... ...           2) the UMAP on the cells in cols 51 and 52
+ad_raw.write_csvs("facs-raw-data/raw")
+ad_processed.write_csvs("facs-raw-data/processed")
+
+## Save count matrices as loom files
+ad_raw.write_loom("facs-raw-data/raw/raw.loom", write_obsm_varm=False)
+ad_processed.write_loom("facs-raw-data/processed/processed.loom", write_obsm_varm=False)
+```
+
+# Processing and saving in `R`
+
+We read in the count matrices as delayed arrays, and save as HDF5 files. We read in the metadata files, organize them, and save them as `csv` files.
+
+```{r counts, eval=FALSE}
+## Read in as DelayedArray
+counts_raw <- HDF5Array::HDF5Array(filepath = "facs-raw-data/raw/raw.loom", name = "matrix")
+counts_processed <- HDF5Array::HDF5Array(filepath = "facs-raw-data/processed/processed.loom", name = "matrix")
+
+## transpose to have genes x cells
+counts_raw <- t(counts_raw)
+counts_processed <- t(counts_processed)
+
+## Save (takes ~ 20-30 min per matrix)
+options(DelayedArray.block.size=1e9) # 1GB block size.
+mat_raw <- writeHDF5Array(x = counts_raw, 
+                          filepath = file.path("TabulaMurisSenisData", "tabula-muris-senis-facs", "counts.h5"), 
+                          name = "counts", 
+                          chunkdim = HDF5Array::getHDF5DumpChunkDim(dim(counts_raw)))
+
+mat_processed <- writeHDF5Array(x = counts_processed, 
+                                filepath = file.path("TabulaMurisSenisData", "tabula-muris-senis-facs", "processed_counts.h5"), 
+                                name = "processed_counts", 
+                                chunkdim = HDF5Array::getHDF5DumpChunkDim(dim(counts_processed)))
+```
+
+The raw and processed h5ad files from figshare have the cells and genes in the same order. The rawData and colData matrices are identical, except the processed one has some additional columns, which is why we include them.
+
+```{r rowData}
+## Read in csv
+rowData <- utils::read.table("facs-raw-data/processed/var.csv", sep = ",", header = TRUE)
+
+## Save
+saveRDS(rowData, "TabulaMurisSenisData/tabula-muris-senis-facs/rowData.rds")
+```
+
+```{r colData}
+## Read in csv
+colData <- utils::read.table("facs-raw-data/processed/obs.csv", sep = ",", header = TRUE)
+
+## add tissue cols as in (https://tabula-muris-senis.ds.czbiohub.org)
+tissue_cols <- read.csv("facs-raw-data/processed/uns/tissue_colors.csv", header = FALSE)[,1]
+names(tissue_cols) <- unique(colData$tissue)
+tissue_cols
+m <- match(colData$tissue, names(tissue_cols))
+colData$tissue_col <- tissue_cols[as.factor(colData$tissue)]
+
+## Save
+saveRDS(colData, "TabulaMurisSenisData/tabula-muris-senis-facs/colData.rds")
+```
+
+We read in the PCA and UMAP from the processed data and save them as `rds` files.
+
+```{r reduced_dims}
+## Read csv
+pca_and_umap <- read.table("facs-raw-data/processed/obsm.csv", sep=",", header = TRUE)
+
+## Extract matrices
+umap <- as.matrix(pca_and_umap[, grep("umap", colnames(pca_and_umap), ignore.case = TRUE)])
+pca <- as.matrix(pca_and_umap[, grep("pc", colnames(pca_and_umap), ignore.case = TRUE)])
+
+## Save
+saveRDS(umap, "TabulaMurisSenisData/tabula-muris-senis-facs/umap.rds")
+saveRDS(pca, "TabulaMurisSenisData/tabula-muris-senis-facs/pca.rds")
+```
+
+# Session
+
+```{r session}
+date()
 sessionInfo()
 ```
 

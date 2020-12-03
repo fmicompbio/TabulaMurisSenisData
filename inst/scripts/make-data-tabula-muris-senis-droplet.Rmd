@@ -92,7 +92,7 @@ counts_raw <- t(counts_raw)
 counts_processed <- t(counts_processed)
 
 ## Save (takes ~ 20-30 min per matrix)
-options(DelayedArray.block.size=1e10) # 1GB block size.
+options(DelayedArray.block.size=1e10) # 10GB block size.
 mat_raw <- writeHDF5Array(x = counts_raw, 
                           filepath = file.path("TabulaMurisSenisData", "tabula-muris-senis-droplet", "counts.h5"), 
                           name = "counts", 
