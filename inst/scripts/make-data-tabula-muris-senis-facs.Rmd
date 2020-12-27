@@ -84,6 +84,12 @@ We read in the count matrices as delayed arrays, and save as HDF5 files. We read
 counts_raw <- HDF5Array::HDF5Array(filepath = "facs-raw-data/raw/raw.loom", name = "matrix")
 counts_processed <- HDF5Array::HDF5Array(filepath = "facs-raw-data/processed/processed.loom", name = "matrix")
 
+## Note that while we download the processed counts directly, they can also be 
+## obtained from the raw counts as follows:
+# proc_counts <- log2(counts_raw/DelayedArray::rowSums(counts_raw) * 1e4 + 1)
+# proc_counts <- t(t(proc_counts)/sqrt(DelayedMatrixStats::colVars(proc_counts)))
+# proc_counts[proc_counts > 10] <- 10
+
 ## transpose to have genes x cells
 counts_raw <- t(counts_raw)
 counts_processed <- t(counts_processed)
