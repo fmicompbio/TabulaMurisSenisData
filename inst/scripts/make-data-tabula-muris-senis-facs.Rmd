@@ -1,7 +1,7 @@
 ---
 title: "Download and preprocess the Tabula Muris Senis facs data"
 author: "Dania Machlab"
-date: "2020-12-03"
+date: "2021-01-13"
 output:
   html_document:
     toc: true
@@ -113,6 +113,9 @@ The raw and processed h5ad files from figshare have the cells and genes in the s
 ## Read in csv
 rowData <- utils::read.table("facs-raw-data/processed/var.csv", sep = ",", header = TRUE)
 
+## make DFrame
+rowData <- as(rowData, "DFrame")
+
 ## Save
 saveRDS(rowData, "TabulaMurisSenisData/tabula-muris-senis-facs/rowData.rds")
 ```
@@ -127,6 +130,9 @@ names(tissue_cols) <- unique(colData$tissue)
 tissue_cols
 m <- match(colData$tissue, names(tissue_cols))
 colData$tissue_col <- tissue_cols[as.factor(colData$tissue)]
+
+## make DFrame
+colData <- as(colData, "DFrame")
 
 ## Save
 saveRDS(colData, "TabulaMurisSenisData/tabula-muris-senis-facs/colData.rds")

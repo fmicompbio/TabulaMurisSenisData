@@ -1,7 +1,7 @@
 ---
 title: "Download and preprocess the Tabula Muris Senis droplet data"
 author: "Dania Machlab"
-date: "2020-10-02"
+date: "2021-01-13"
 output:
   html_document:
     toc: true
@@ -98,7 +98,7 @@ counts_raw <- t(counts_raw)
 counts_processed <- t(counts_processed)
 
 ## Save (takes ~ 20-30 min per matrix)
-options(DelayedArray.block.size=1e10) # 10GB block size.
+options(DelayedArray.block.size=1e9) # 1GB block size.
 mat_raw <- writeHDF5Array(x = counts_raw, 
                           filepath = file.path("TabulaMurisSenisData", "tabula-muris-senis-droplet", "counts.h5"), 
                           name = "counts", 
@@ -116,6 +116,9 @@ The raw and processed h5ad files from figshare have the cells and genes in the s
 ## Read in csv
 rowData <- utils::read.table("droplet-raw-data/processed/var.csv", sep = ",", header = TRUE)
 
+## make DFrame
+rowData <- as(rowData, "DFrame")
+
 ## Save
 saveRDS(rowData, "TabulaMurisSenisData/tabula-muris-senis-droplet/rowData.rds")
 ```
@@ -131,6 +134,9 @@ names(tissue_cols) <- unique(colData$tissue)
 tissue_cols
 m <- match(colData$tissue, names(tissue_cols))
 colData$tissue_col <- tissue_cols[as.factor(colData$tissue)]
+
+## make DFrame
+colData <- as(colData, "DFrame")
 
 ## Save
 saveRDS(colData, "TabulaMurisSenisData/tabula-muris-senis-droplet/colData.rds")
