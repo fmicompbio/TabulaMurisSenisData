@@ -13,12 +13,15 @@
 #' characterizes ageing tissues in the mouse. Nature 583:590–595 (2020).
 #'
 #' @examples
-#' sce <- TabulaMurisSenisBulk()
+#' if (interactive()) {
+#'   sce <- TabulaMurisSenisBulk()
+#' }
 #'
 #' @export
 #'
 #' @importFrom ExperimentHub ExperimentHub
 #' @importFrom SingleCellExperiment SingleCellExperiment
+#'
 TabulaMurisSenisBulk <- function() {
     hub <- ExperimentHub::ExperimentHub()
     host <- file.path("TabulaMurisSenisData", "tabula-muris-senis-bulk")

@@ -1,10 +1,20 @@
 ---
 title: "TabulaMurisSenisData"
-output: rmarkdown::html_vignette
+author: "Charlotte Soneson, Dania Machlab, Federico Marini"
+date: "`r BiocStyle::doc_date()`"
+package: "`r BiocStyle::pkg_ver('TabulaMurisSenisData')`"
+output: 
+  BiocStyle::html_document:
+    toc_float: true
 vignette: >
   %\VignetteIndexEntry{TabulaMurisSenisData}
+  %\VignetteEncoding{UTF-8}  
+  %\VignettePackage{TabulaMurisSenisData}
+  %\VignetteKeywords{GeneExpression, RNASeq, SingleCell}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+editor_options: 
+  chunk_output_type: console
+bibliography: TabulaMurisSenisData.bib
 ---
 
 ```{r, include = FALSE}
@@ -22,9 +32,13 @@ library(TabulaMurisSenisData)
 # Introduction
 
 This package provides access to the processed bulk and single-cell RNA-seq data 
-from the _Tabula Muris Senis_ data set [REFs]. The processed data was 
-downloaded from GEO [links] and packaged into `SingleCellExperiment` objects 
-for easy access from R. 
+from the _Tabula Muris Senis_ data set 
+[@Schaum2019-nf;@Tabula_Muris_Consortium2020-um]. The processed bulk RNA-seq 
+data was downloaded from GEO (accession number 
+[GSE132040](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE132040)). The 
+single-cell data (droplet and FACS) was obtained from FigShare (see below for links).
+All data sets are provided as `SingleCellExperiment` objects for easy access 
+and use within the Bioconductor ecosystem. 
 
 # Bulk RNA-seq data
 
@@ -33,7 +47,37 @@ tms_bulk <- TabulaMurisSenisBulk()
 tms_bulk
 ```
 
+# Single-cell RNA-seq data
+
+## Droplet data
+
+The data files for the droplet single-cell RNA-seq data were downloaded from FigShare: 
+
+* [The h5ad file with the raw counts](https://figshare.com/articles/dataset/Processed_files_to_use_with_scanpy_/8273102?file=23938934)
+* [The h5ad file with the processed counts, and additional reduced dimensionalities](https://figshare.com/articles/dataset/Processed_files_to_use_with_scanpy_/8273102?file=23936684)
+
 
 ```{r}
+tms_droplet <- TabulaMurisSenisDroplet()
+tms_droplet
 ```
 
+## FACS data
+
+The data files for the FACS single-cell RNA-seq data were downloaded from FigShare: 
+
+* [The h5ad file with the raw counts](https://figshare.com/articles/dataset/Processed_files_to_use_with_scanpy_/8273102?file=23939711)
+* [The h5ad file with the processed counts, and additional reduced dimensionalities](https://figshare.com/articles/dataset/Processed_files_to_use_with_scanpy_/8273102?file=23937842)
+
+```{r}
+tms_facs <- TabulaMurisSenisFACS()
+tms_facs
+```
+
+# Session info
+
+```{r}
+sessionInfo()
+```
+
+# References
