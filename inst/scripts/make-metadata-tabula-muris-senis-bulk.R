@@ -8,7 +8,7 @@ write.csv(
                               c("Count matrix", "Gene annotation", "Sample metadata")),
         RDataPath = file.path("TabulaMurisSenisData", "tabula-muris-senis-bulk",
                               c("counts.rds", "rowranges.rds", "coldata.rds")),
-        BiocVersion = "3.12",
+        BiocVersion = "3.14",
         Genome = "GRCm38",
         SourceType = c("BAM", "BAM", "TXT"),
         SourceUrl = rep("https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE132040", 3),

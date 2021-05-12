@@ -24,7 +24,7 @@ write.csv(
                                 "colData.rds",
                                 "umap.rds",
                                 "pca.rds")),
-        BiocVersion = "3.13",
+        BiocVersion = "3.14",
         Genome = "GRCm38",
         SourceType = rep("HDF5", 6),
         SourceUrl = c("https://figshare.com/articles/dataset/Processed_files_to_use_with_scanpy_/8273102?file=23939711",
