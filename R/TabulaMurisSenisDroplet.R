@@ -40,9 +40,7 @@ TabulaMurisSenisDroplet <- function(processedCounts = FALSE,
     sce <- SingleCellExperiment::SingleCellExperiment(
         assays = list(counts = counts),
         rowData = rowdata,
-        colData = coldata,
-        reducedDims = list(PCA = pca,
-                           UMAP = umap)
+        colData = coldata
     )
     if (processedCounts) {
         SummarizedExperiment::assays(sce)[["logcounts"]] <- proccounts
