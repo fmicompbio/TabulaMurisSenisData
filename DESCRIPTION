@@ -5,7 +5,9 @@ Version: 0.99.0
 Authors@R: c(person("Charlotte", "Soneson", role = c("aut", "cre"), 
                     email = "charlottesoneson@gmail.com", 
                     comment = c(ORCID = "0000-0003-3833-2169")),
-             person("Dania", "Machlab", role = c("aut")),
+             person("Dania", "Machlab", role = c("aut"),
+                    email = "dania.machlab@gmail.com",
+                    comment = c(ORCID = "0000-0002-2578-6930")),
              person("Federico", "Marini", role = c("aut"), 
                     email = "marinif@uni-mainz.de", 
                     comment = c(ORCID = "0000-0003-3252-7758"))
@@ -26,7 +28,7 @@ Imports:
 URL: https://github.com/fmicompbio/TabulaMurisSenisData
 BugReports: https://github.com/fmicompbio/TabulaMurisSenisData/issues
 VignetteBuilder: knitr
-biocViews: SingleCellData, ExperimentData, RNASeqData
+biocViews: SingleCellData, ExperimentData, RNASeqData, ExperimentHub
 Suggests: 
     testthat,
     knitr,
