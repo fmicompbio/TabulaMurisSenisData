@@ -27,26 +27,40 @@
 #' @importFrom SummarizedExperiment assays
 #' @importFrom SingleCellExperiment SingleCellExperiment reducedDims
 #'
-TabulaMurisSenisDroplet <- function(processedCounts = FALSE,
+TabulaMurisSenisDroplet <- function(tissues = "All", processedCounts = FALSE,
                                     reducedDims = TRUE) {
+    allowedTissues <- c("All", "Large_Intestine", "Pancreas", "Trachea", "Skin",
+                        "Fat", "Thymus", "Liver", "Heart_and_Aorta",
+                        "Mammary_Gland", "Bladder", "Lung", "Kidney",
+                        "Limb_Muscle", "Spleen", "Tongue", "Marros")
+    if (!all(tissues %in% allowedTissues)) {
+        stop("'tissues' must be a subset of ", paste(allowedTissues, collapse = ", "))
+    }
+
     hub <- ExperimentHub::ExperimentHub()
     host <- file.path("TabulaMurisSenisData", "tabula-muris-senis-droplet")
-    counts <- hub[hub$rdatapath == file.path(host, "counts.h5")][[1]]
-    proccounts <- hub[hub$rdatapath == file.path(host, "processed_counts.h5")][[1]]
-    coldata <- hub[hub$rdatapath == file.path(host, "colData.rds")][[1]]
-    rowdata <- hub[hub$rdatapath == file.path(host, "rowData.rds")][[1]]
-    pca <- hub[hub$rdatapath == file.path(host, "pca.rds")][[1]]
-    umap <- hub[hub$rdatapath == file.path(host, "umap.rds")][[1]]
-    sce <- SingleCellExperiment::SingleCellExperiment(
-        assays = list(counts = counts),
-        rowData = rowdata,
-        colData = coldata
-    )
-    if (processedCounts) {
-        SummarizedExperiment::assays(sce)[["logcounts"]] <- proccounts
-    }
-    if (reducedDims) {
-        SingleCellExperiment::reducedDims(sce) <- list(PCA = pca, UMAP = umap)
-    }
-    sce
+
+    names(tissues) <- tissues
+    out <- lapply(tissues, function(ts) {
+        counts <- hub[hub$rdatapath == file.path(host, paste0(ts, "_counts.h5"))][[1]]
+        proccounts <- hub[hub$rdatapath == file.path(host, paste0(ts, "_processed.h5"))][[1]]
+        coldata <- hub[hub$rdatapath == file.path(host, paste0(ts, "_coldata.rds"))][[1]]
+        rowdata <- hub[hub$rdatapath == file.path(host, paste0(ts, "_rowdata.rds"))][[1]]
+        pca <- hub[hub$rdatapath == file.path(host, paste0(ts, "_pca.rds"))][[1]]
+        tsne <- hub[hub$rdatapath == file.path(host, paste0(ts, "_tsne.rds"))][[1]]
+        umap <- hub[hub$rdatapath == file.path(host, paste0(ts, "_umap.rds"))][[1]]
+        sce <- SingleCellExperiment::SingleCellExperiment(
+            assays = list(counts = counts),
+            rowData = rowdata,
+            colData = coldata
+        )
+        if (processedCounts) {
+            SummarizedExperiment::assays(sce)[["logcounts"]] <- proccounts
+        }
+        if (reducedDims) {
+            SingleCellExperiment::reducedDims(sce) <- list(PCA = pca, UMAP = umap)
+        }
+        sce
+    })
+    out
 }
