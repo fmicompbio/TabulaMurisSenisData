@@ -102,13 +102,19 @@ for (f in filelist$filename) {
     saveRDS(colData(tmp), file = file.path(outdir, paste0(tissue, "_coldata.rds")))
     saveRDS(rowData(tmp), file = file.path(outdir, paste0(tissue, "_rowdata.rds")))
     if ("X_pca" %in% reducedDimNames(tmp)) {
-        saveRDS(reducedDim(tmp, "X_pca"), file = file.path(outdir, paste0(tissue, "_pca.rds")))
+        tmpmat <- reducedDim(tmp, "X_pca")
+        colnames(tmpmat) <- paste0("PC", seq_len(ncol(tmpmat)))
+        saveRDS(tmpmat, file = file.path(outdir, paste0(tissue, "_pca.rds")))
     }
     if ("X_tsne" %in% reducedDimNames(tmp)) {
-        saveRDS(reducedDim(tmp, "X_tsne"), file = file.path(outdir, paste0(tissue, "_tsne.rds")))
+        tmpmat <- reducedDim(tmp, "X_tsne")
+        colnames(tmpmat) <- paste0("TSNE", seq_len(ncol(tmpmat)))
+        saveRDS(tmpmat, file = file.path(outdir, paste0(tissue, "_tsne.rds")))
     }
     if ("X_umap" %in% reducedDimNames(tmp)) {
-        saveRDS(reducedDim(tmp, "X_umap"), file = file.path(outdir, paste0(tissue, "_umap.rds")))
+        tmpmat <- reducedDim(tmp, "X_umap")
+        colnames(tmpmat) <- paste0("UMAP", seq_len(ncol(tmpmat)))
+        saveRDS(tmpmat, file = file.path(outdir, paste0(tissue, "_umap.rds")))
     }
     
     ## Print number of cells per tissue
@@ -117,6 +123,12 @@ for (f in filelist$filename) {
     ## Extract the 'raw.X' matrix (counts) and save as an integer matrix
     ad <- reticulate::import("anndata")
     res <- ad$read_h5ad(file.path(datadir, f))
+    
+    ## Save color vector (and other things) for the full data set
+    if (tissue == "All") {
+        res$write_csvs("droplet-csvs")
+    }
+    
     cts <- t(res$raw$X)
     cts <- as(cts, "CsparseMatrix")
     cts <- DelayedArray(cts)
@@ -132,7 +144,7 @@ for (f in filelist$filename) {
     
     ## Note that while we download the processed counts directly, they can also be 
     ## obtained from the raw counts as follows:
-    if (ncol(cts) <= 2000) {
+    if (ncol(cts) <= 10000) {
         cts <- t(cts)
         proc_counts <- log2(cts/DelayedArray::rowSums(cts) * 1e4 + 1)
         proc_counts <- t(t(proc_counts)/sqrt(DelayedMatrixStats::colVars(proc_counts)))
