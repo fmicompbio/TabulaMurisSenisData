@@ -31,3 +31,8 @@ knitr::kable(
 # maybe put a screenshot of iSEE viewing tSNE of each set?
 ```
 
+## Rendered processing reports
+
+* [bulk data](https://www.dropbox.com/s/4c8jplihh1nyj4u/make-data-tabula-muris-senis-bulk.html?dl=0)
+* [droplet single-cell data](https://www.dropbox.com/s/xckngw1u4aqi3xa/make-data-tabula-muris-senis-droplet.html?dl=0)
+* [FACS single-cell data](https://www.dropbox.com/s/gs47snnkstinm2j/make-data-tabula-muris-senis-facs.html?dl=0)
