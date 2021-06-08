@@ -2,10 +2,11 @@
 ## (above pkg directory)
 suppressPackageStartupMessages({
     library(dplyr)
+    library(tidyr)
 })
 convs <- c(coldata = "colData", counts = "counts", processed = "processed counts",
            rowdata = "rowData", pca = "PCA", tsne = "tSNE", umap = "UMAP")
-convs2 <- c(coldata = "Sample metadata", counts = "Count matrix",
+convs2 <- c(coldata = "Cell metadata", counts = "Count matrix",
             processed = "Processed count matrix", rowdata = "Gene annotation",
             pca = "PCA representation", tsne = "tSNE representation",
             umap = "UMAP representation")
