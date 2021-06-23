@@ -10,7 +10,7 @@
 #'   counts in addition to the raw counts in the SingleCellExperiment object.
 #' @param reducedDims Logical scalar. If \code{TRUE}, include the PCA, tSNE
 #'   and UMAP representations in the SingleCellExperiment object (the tSNE
-#'   representation is not available for tissue = 'All').
+#'   representation is not available for the full dataset ('All' tissue)).
 #'
 #' @author Charlotte Soneson
 #'
