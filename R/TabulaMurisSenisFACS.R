@@ -35,7 +35,7 @@
 #'
 TabulaMurisSenisFACS <- function(tissues = "All", processedCounts = FALSE,
                                  reducedDims = TRUE) {
-    allowedTissues <- listTabulaMurisSenisTissues(dataset = "facs")
+    allowedTissues <- listTabulaMurisSenisTissues(dataset = "FACS")
     if (!all(tissues %in% allowedTissues)) {
         stop("'tissues' must be a subset of ", paste(allowedTissues, collapse = ", "))
     }
