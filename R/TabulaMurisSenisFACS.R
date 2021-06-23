@@ -1,11 +1,16 @@
 #' Get the Tabula Muris Senis FACS single-cell RNA-seq data
 #'
-#' @return A \linkS4class{SingleCellExperiment} object.
+#' @return A named list of \linkS4class{SingleCellExperiment} objects (one
+#'   per tissue requested via \code{tissues}).
 #'
+#' @param tissues A character vector with the tissues to retrieve objects for.
+#'   A list of available tissues can be obtained using
+#'   \code{listTabulaMurisSenisTissues("FACS")}.
 #' @param processedCounts Logical scalar. If \code{TRUE}, include the processed
 #'   counts in addition to the raw counts in the SingleCellExperiment object.
-#' @param reducedDims Logical scalar. If \code{TRUE}, include the PCA and UMAP
-#'   representations in the SingleCellExperiment object.
+#' @param reducedDims Logical scalar. If \code{TRUE}, include the PCA, tSNE
+#'   and UMAP representations in the SingleCellExperiment object (the tSNE
+#'   representation is not available for tissue = 'All').
 #'
 #' @author Charlotte Soneson
 #'
@@ -30,11 +35,7 @@
 #'
 TabulaMurisSenisFACS <- function(tissues = "All", processedCounts = FALSE,
                                  reducedDims = TRUE) {
-    allowedTissues <- c("All", "Aorta", "Kidney", "Diaphragm", "BAT", "Spleen",
-                        "Limb_Muscle", "Liver", "MAT", "Thymus", "Trachea",
-                        "GAT", "SCAT", "Bladder", "Lung", "Mammary_Gland",
-                        "Pancreas", "Skin", "Tongue", "Brain_Non-Myeloid",
-                        "Heart", "Brain_Myeloid", "Large_Intestine", "Marrow")
+    allowedTissues <- listTabulaMurisSenisTissues(dataset = "facs")
     if (!all(tissues %in% allowedTissues)) {
         stop("'tissues' must be a subset of ", paste(allowedTissues, collapse = ", "))
     }
