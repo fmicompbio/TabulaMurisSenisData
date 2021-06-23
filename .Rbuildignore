@@ -1,3 +1,13 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
+.gitignore
+.Rhistory
+.RData
+inst/scripts/bulk-raw-data
+inst/scripts/droplet-csvs
+inst/scripts/droplet-raw-data
+inst/scripts/facs-csvs
+inst/scripts/facs-raw-data
+inst/scripts/TabulaMurisSenisData
+inst/scripts/*.html
