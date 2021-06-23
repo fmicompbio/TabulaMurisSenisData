@@ -24,8 +24,9 @@
 #' @export
 #'
 #' @importFrom ExperimentHub ExperimentHub
-#' @importFrom SummarizedExperiment assays
-#' @importFrom SingleCellExperiment SingleCellExperiment reducedDims
+#' @importFrom SummarizedExperiment assay
+#' @importFrom SingleCellExperiment SingleCellExperiment reducedDim
+#' @importFrom HDF5Array HDF5Array
 #'
 TabulaMurisSenisFACS <- function(tissues = "All", processedCounts = FALSE,
                                  reducedDims = TRUE) {
@@ -44,22 +45,26 @@ TabulaMurisSenisFACS <- function(tissues = "All", processedCounts = FALSE,
     names(tissues) <- tissues
     out <- lapply(tissues, function(ts) {
         counts <- hub[hub$rdatapath == file.path(host, paste0(ts, "_counts.h5"))][[1]]
-        proccounts <- hub[hub$rdatapath == file.path(host, paste0(ts, "_processed.h5"))][[1]]
         coldata <- hub[hub$rdatapath == file.path(host, paste0(ts, "_coldata.rds"))][[1]]
         rowdata <- hub[hub$rdatapath == file.path(host, paste0(ts, "_rowdata.rds"))][[1]]
-        pca <- hub[hub$rdatapath == file.path(host, paste0(ts, "_pca.rds"))][[1]]
-        tsne <- hub[hub$rdatapath == file.path(host, paste0(ts, "_tsne.rds"))][[1]]
-        umap <- hub[hub$rdatapath == file.path(host, paste0(ts, "_umap.rds"))][[1]]
         sce <- SingleCellExperiment::SingleCellExperiment(
-            assays = list(counts = counts),
+            assays = list(counts = HDF5Array::HDF5Array(counts, name = "counts")),
             rowData = rowdata,
             colData = coldata
         )
         if (processedCounts) {
-            SummarizedExperiment::assays(sce)[["logcounts"]] <- proccounts
+            proccounts <- hub[hub$rdatapath == file.path(host, paste0(ts, "_processed.h5"))][[1]]
+            SummarizedExperiment::assay(sce, "logcounts", withDimnames = FALSE) <-
+                HDF5Array::HDF5Array(proccounts, name = "processed")
         }
         if (reducedDims) {
+            pca <- hub[hub$rdatapath == file.path(host, paste0(ts, "_pca.rds"))][[1]]
+            umap <- hub[hub$rdatapath == file.path(host, paste0(ts, "_umap.rds"))][[1]]
             SingleCellExperiment::reducedDims(sce) <- list(PCA = pca, UMAP = umap)
+            if (ts != "All") {
+                tsne <- hub[hub$rdatapath == file.path(host, paste0(ts, "_tsne.rds"))][[1]]
+                SingleCellExperiment::reducedDim(sce, "TSNE") <- tsne
+            }
         }
         sce
     })

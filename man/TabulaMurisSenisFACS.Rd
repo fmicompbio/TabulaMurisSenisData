@@ -4,7 +4,11 @@
 \alias{TabulaMurisSenisFACS}
 \title{Get the Tabula Muris Senis FACS single-cell RNA-seq data}
 \usage{
-TabulaMurisSenisFACS(processedCounts = FALSE, reducedDims = TRUE)
+TabulaMurisSenisFACS(
+  tissues = "All",
+  processedCounts = FALSE,
+  reducedDims = TRUE
+)
 }
 \arguments{
 \item{processedCounts}{Logical scalar. If \code{TRUE}, include the processed

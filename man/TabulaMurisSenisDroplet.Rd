@@ -4,7 +4,11 @@
 \alias{TabulaMurisSenisDroplet}
 \title{Get the Tabula Muris Senis droplet single-cell RNA-seq data}
 \usage{
-TabulaMurisSenisDroplet(processedCounts = FALSE, reducedDims = TRUE)
+TabulaMurisSenisDroplet(
+  tissues = "All",
+  processedCounts = FALSE,
+  reducedDims = TRUE
+)
 }
 \arguments{
 \item{processedCounts}{Logical scalar. If \code{TRUE}, include the processed
