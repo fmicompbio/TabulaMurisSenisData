@@ -63,7 +63,7 @@ tms_droplet <- TabulaMurisSenisDroplet()
 tms_droplet
 ```
 
-We plot the UMAP of the entire data set and color by tissue.
+We plot the UMAP of the entire data set and color by tissue, to re-create the plot from [here](https://tabula-muris-senis.ds.czbiohub.org).
 
 ```{r}
 # tissue colors
@@ -106,7 +106,7 @@ tms_facs <- TabulaMurisSenisFACS()
 tms_facs
 ```
 
-We plot the UMAP of the entire data set and color by tissue.
+We plot the UMAP of the entire data set and color by tissue, to re-create the plot from [here](https://tabula-muris-senis.ds.czbiohub.org).
 
 ```{r}
 # tissue colors
