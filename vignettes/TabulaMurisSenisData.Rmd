@@ -48,6 +48,11 @@ tms_bulk <- TabulaMurisSenisBulk()
 tms_bulk
 ```
 
+We list the available tissues.
+```{r}
+table(colData(tms_bulk)$organ)
+```
+
 # Single-cell RNA-seq data
 
 ## Droplet data
@@ -57,14 +62,17 @@ The data files for the droplet single-cell RNA-seq data were downloaded from Fig
 * [The h5ad file with the raw counts](https://figshare.com/articles/dataset/Processed_files_to_use_with_scanpy_/8273102?file=23938934)
 * [The h5ad file with the processed counts, and additional reduced dimensionalities](https://figshare.com/articles/dataset/Processed_files_to_use_with_scanpy_/8273102?file=23936684)
 
+We list the available tissues.
+```{r}
+listTabulaMurisSenisTissues(dataset = "Droplet")
+```
 
 ```{r}
-tms_droplet <- TabulaMurisSenisDroplet()
+tms_droplet <- TabulaMurisSenisDroplet(tissues = "All")
 tms_droplet
 ```
 
 We plot the UMAP of the entire data set and color by tissue, to re-create the plot from [here](https://tabula-muris-senis.ds.czbiohub.org).
-
 ```{r}
 # tissue colors
 tissue_cols <- c(Pancreas = "#3182bd", Thymus = "#31a354", 
@@ -90,10 +98,9 @@ ggplot(ds, aes(x = UMAP1, y = UMAP2, color = tissue)) +
   geom_point(size = 0.05) + 
   scale_color_manual(values = tissue_cols) + 
   theme_classic() + 
-  guides(colour = guide_legend(override.aes = list(size=5)))
+  guides(colour = guide_legend(override.aes = list(size = 5)))
 
 ```
-
 
 
 ## FACS data
@@ -103,13 +110,17 @@ The data files for the FACS single-cell RNA-seq data were downloaded from FigSha
 * [The h5ad file with the raw counts](https://figshare.com/articles/dataset/Processed_files_to_use_with_scanpy_/8273102?file=23939711)
 * [The h5ad file with the processed counts, and additional reduced dimensionalities](https://figshare.com/articles/dataset/Processed_files_to_use_with_scanpy_/8273102?file=23937842)
 
+We list the available tissues.
 ```{r}
-tms_facs <- TabulaMurisSenisFACS()
+listTabulaMurisSenisTissues(dataset = "FACS")
+```
+
+```{r}
+tms_facs <- TabulaMurisSenisFACS(tissues = "All")
 tms_facs
 ```
 
 We plot the UMAP of the entire data set and color by tissue, to re-create the plot from [here](https://tabula-muris-senis.ds.czbiohub.org).
-
 ```{r}
 # tissue colors
 tissue_cols <- c(Skin = "#e6550d", Pancreas = "#3182bd", 
@@ -138,7 +149,7 @@ ggplot(ds, aes(x = UMAP1, y = UMAP2, color = tissue)) +
   geom_point(size = 0.05) + 
   scale_color_manual(values = tissue_cols) + 
   theme_classic() + 
-  guides(colour = guide_legend(override.aes = list(size=5)))
+  guides(colour = guide_legend(override.aes = list(size = 5)))
 
 ```
 
