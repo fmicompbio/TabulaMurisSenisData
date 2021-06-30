@@ -27,6 +27,7 @@ knitr::opts_chunk$set(
 ```{r setup, message = FALSE}
 library(SingleCellExperiment)
 library(TabulaMurisSenisData)
+library(ggplot2)
 ```
 
 # Introduction
@@ -47,6 +48,11 @@ tms_bulk <- TabulaMurisSenisBulk()
 tms_bulk
 ```
 
+We list the available tissues.
+```{r}
+table(colData(tms_bulk)$organ)
+```
+
 # Single-cell RNA-seq data
 
 ## Droplet data
@@ -56,11 +62,46 @@ The data files for the droplet single-cell RNA-seq data were downloaded from Fig
 * [The h5ad file with the raw counts](https://figshare.com/articles/dataset/Processed_files_to_use_with_scanpy_/8273102?file=23938934)
 * [The h5ad file with the processed counts, and additional reduced dimensionalities](https://figshare.com/articles/dataset/Processed_files_to_use_with_scanpy_/8273102?file=23936684)
 
+We list the available tissues.
+```{r}
+listTabulaMurisSenisTissues(dataset = "Droplet")
+```
 
 ```{r}
-tms_droplet <- TabulaMurisSenisDroplet()
+tms_droplet <- TabulaMurisSenisDroplet(tissues = "All")
 tms_droplet
 ```
+
+We plot the UMAP of the entire data set and color by tissue, to re-create the plot from [here](https://tabula-muris-senis.ds.czbiohub.org).
+```{r}
+# tissue colors
+tissue_cols <- c(Pancreas = "#3182bd", Thymus = "#31a354", 
+                 Trachea = "#636363", Bladder = "#637939", 
+                 Lung = "#7b4173", Large_Intestine = "#843c39", 
+                 Fat = "#969696", Tongue = "#a1d99b", 
+                 Mammary_Gland = "#ce6dbd", Limb_Muscle = "#d6616b", 
+                 Marrow = "#de9ed6", Skin = "#e6550d", 
+                 Liver = "#e7969c", Heart_and_Aorta = "#e7ba52", 
+                 Kidney = "#e7cb94", Spleen = "#fd8d3c")
+
+# get dataset with all tissues
+se <- tms_droplet$All
+se 
+
+# prepare data set for ggplot
+ds <- as.data.frame(reducedDim(se, "UMAP"))
+ds <- cbind(ds, tissue = colData(se)$tissue)
+head(ds)
+
+# plot
+ggplot(ds, aes(x = UMAP1, y = UMAP2, color = tissue)) + 
+  geom_point(size = 0.05) + 
+  scale_color_manual(values = tissue_cols) + 
+  theme_classic() + 
+  guides(colour = guide_legend(override.aes = list(size = 5)))
+
+```
+
 
 ## FACS data
 
@@ -69,10 +110,49 @@ The data files for the FACS single-cell RNA-seq data were downloaded from FigSha
 * [The h5ad file with the raw counts](https://figshare.com/articles/dataset/Processed_files_to_use_with_scanpy_/8273102?file=23939711)
 * [The h5ad file with the processed counts, and additional reduced dimensionalities](https://figshare.com/articles/dataset/Processed_files_to_use_with_scanpy_/8273102?file=23937842)
 
+We list the available tissues.
 ```{r}
-tms_facs <- TabulaMurisSenisFACS()
+listTabulaMurisSenisTissues(dataset = "FACS")
+```
+
+```{r}
+tms_facs <- TabulaMurisSenisFACS(tissues = "All")
 tms_facs
 ```
+
+We plot the UMAP of the entire data set and color by tissue, to re-create the plot from [here](https://tabula-muris-senis.ds.czbiohub.org).
+```{r}
+# tissue colors
+tissue_cols <- c(Skin = "#e6550d", Pancreas = "#3182bd", 
+                 Limb_Muscle = "#d6616b", Heart = "#e7ba52", 
+                 Spleen = "#fd8d3c", Diaphragm = "#8c6d31", 
+                 Trachea = "#636363", Tongue = "#a1d99b", 
+                 Thymus = "#31a354", `Brain_Non-Myeloid` = "#cedb9c", 
+                 Brain_Myeloid = "#b5cf6b", Bladder = "#637939", 
+                 Large_Intestine = "#843c39", BAT = "#9c9ede", 
+                 GAT = "#bd9e39", MAT = "#a55194", SCAT = "#6baed6", 
+                 Lung = "#7b4173", Liver = "#e7969c", 
+                 Marrow = "#de9ed6", Kidney = "#e7cb94", 
+                 Aorta = "#393b79", Mammary_Gland = "#ce6dbd")
+
+# get dataset with all tissues
+se <- tms_facs$All
+se 
+
+# prepare data set for ggplot
+ds <- as.data.frame(reducedDim(se, "UMAP"))
+ds <- cbind(ds, tissue = colData(se)$tissue)
+head(ds)
+
+# plot
+ggplot(ds, aes(x = UMAP1, y = UMAP2, color = tissue)) + 
+  geom_point(size = 0.05) + 
+  scale_color_manual(values = tissue_cols) + 
+  theme_classic() + 
+  guides(colour = guide_legend(override.aes = list(size = 5)))
+
+```
+
 
 # Session info
 

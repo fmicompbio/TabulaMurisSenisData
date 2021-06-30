@@ -35,6 +35,7 @@ BugReports: https://github.com/fmicompbio/TabulaMurisSenisData/issues
 VignetteBuilder: knitr
 biocViews: SingleCellData, ExperimentData, RNASeqData, ExperimentHub
 Suggests: 
+    ggplot2,
     testthat,
     knitr,
     rmarkdown,
