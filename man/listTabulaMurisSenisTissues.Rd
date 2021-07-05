@@ -9,6 +9,14 @@ listTabulaMurisSenisTissues(dataset)
 \arguments{
 \item{dataset}{Either 'Droplet' or 'FACS'}
 }
+\value{
+A character vector with the available tissues for the indicated
+  dataset.
+}
 \description{
 List available tissues for the Tabula Muris Senis datasets
+}
+\examples{
+listTabulaMurisSenisTissues(dataset = "Droplet")
+
 }

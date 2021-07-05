@@ -1,4 +1,12 @@
-#' Get the Tabula Muris Senis bulk RNA-seq data
+#' Access the Tabula Muris Senis bulk RNA-seq data
+#'
+#' Access the bulk RNA-seq data from the Tabula Muris Senis consortium.
+#'
+#' The data set was downloaded from GEO (accession number GSE132040). The
+#' summary statistics from HTSeq-count were combined with the provided sample
+#' metadata and included in the colData of the object. In addition,
+#' gene annotations from GENCODE vM19 were downloaded and included in the
+#' rowRanges of the object.
 #'
 #' @return A \linkS4class{SingleCellExperiment} object with a single matrix of
 #'   counts.
@@ -6,11 +14,11 @@
 #' @author Charlotte Soneson
 #'
 #' @references
-#' Schaum et al.: The murine transcriptome reveals global aging nodes with
-#' organ-specific phase and amplitude. bioRxiv doi:10.1101/662254 (2019).
+#' Schaum et al (2019): The murine transcriptome reveals global aging nodes with
+#' organ-specific phase and amplitude. bioRxiv doi:10.1101/662254.
 #'
-#' The Tabula Muris Consortium: A single-cell transcriptomic atlas
-#' characterizes ageing tissues in the mouse. Nature 583:590–595 (2020).
+#' The Tabula Muris Consortium (2020): A single-cell transcriptomic atlas
+#' characterizes ageing tissues in the mouse. Nature 583:590–595.
 #'
 #' @examples
 #' if (interactive()) {
