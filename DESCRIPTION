@@ -37,4 +37,5 @@ Suggests:
     testthat,
     knitr,
     rmarkdown,
+    iSEE,
     BiocStyle
