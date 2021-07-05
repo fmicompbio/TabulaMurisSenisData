@@ -157,6 +157,7 @@ ggplot(ds, aes(x = UMAP1, y = UMAP2, color = tissue)) +
 
 
 # Session info
+# Session info {-}
 
 ```{r}
 sessionInfo()
