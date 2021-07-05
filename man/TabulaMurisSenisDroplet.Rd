@@ -2,7 +2,7 @@
 % Please edit documentation in R/TabulaMurisSenisDroplet.R
 \name{TabulaMurisSenisDroplet}
 \alias{TabulaMurisSenisDroplet}
-\title{Get the Tabula Muris Senis droplet single-cell RNA-seq data}
+\title{Access the Tabula Muris Senis droplet single-cell RNA-seq data}
 \usage{
 TabulaMurisSenisDroplet(
   tissues = "All",
@@ -27,20 +27,28 @@ A named list of \linkS4class{SingleCellExperiment} objects (one
   per tissue requested via \code{tissues}).
 }
 \description{
-Get the Tabula Muris Senis droplet single-cell RNA-seq data
+Access the droplet (10x Genomics) RNA-seq data from the Tabula Muris Senis
+consortium.
+}
+\details{
+The data set was downloaded from figshare
+(https://figshare.com/articles/dataset/Processed_files_to_use_with_scanpy_/8273102?file=23938934
+for the full data set,
+https://figshare.com/articles/dataset/Tabula_Muris_Senis_Data_Objects/12654728
+for the individual tissue ones).
 }
 \examples{
 if (interactive()) {
-  sce <- TabulaMurisSenisDroplet()
+  sce <- TabulaMurisSenisDroplet(tissues = "All")
 }
 
 }
 \references{
-Schaum et al.: The murine transcriptome reveals global aging nodes with
-organ-specific phase and amplitude. bioRxiv doi:10.1101/662254 (2019).
+Schaum et al (2019): The murine transcriptome reveals global aging nodes with
+organ-specific phase and amplitude. bioRxiv doi:10.1101/662254.
 
-The Tabula Muris Consortium: A single-cell transcriptomic atlas
-characterizes ageing tissues in the mouse. Nature 583:590–595 (2020).
+The Tabula Muris Consortium (2020): A single-cell transcriptomic atlas
+characterizes ageing tissues in the mouse. Nature 583:590–595.
 }
 \author{
 Charlotte Soneson
