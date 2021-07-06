@@ -1,9 +1,9 @@
+# TabulaMurisSenisData
+
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/fmicompbio/TabulaMurisSenisData/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/fmicompbio/TabulaMurisSenisData/actions)
 <!-- badges: end -->
-
-# TabulaMurisSenisData
 
 This is an
 R/[ExperimentHub](https://bioconductor.org/packages/release/bioc/html/ExperimentHub.html)
