@@ -1,6 +1,6 @@
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/fmicompbio/TabulaMurisSenisData/workflows/R-CMD-check/badge.svg)](https://github.com/fmicompbio/TabulaMurisSenisData/actions)
+[![R-CMD-check](https://github.com/fmicompbio/TabulaMurisSenisData/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/fmicompbio/TabulaMurisSenisData/actions)
 <!-- badges: end -->
 
 # TabulaMurisSenisData
