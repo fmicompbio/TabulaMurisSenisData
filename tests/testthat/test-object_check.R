@@ -1,13 +1,18 @@
 test_that("downloading droplet data works", {
     droplet <- TabulaMurisSenisDroplet(tissues = "Large_Intestine",
-                                       processedCounts = FALSE,
+                                       processedCounts = TRUE,
                                        reducedDims = TRUE)
     expect_is(droplet, "list")
     expect_named(droplet, "Large_Intestine")
 
     droplet_li <- droplet$Large_Intestine
     expect_s4_class(droplet_li, "SingleCellExperiment")
-    expect_setequal(SummarizedExperiment::assayNames(droplet_li), "counts")
+    expect_setequal(SummarizedExperiment::assayNames(droplet_li),
+                    c("counts", "logcounts"))
+    expect_s4_class(SummarizedExperiment::assay(droplet_li, "counts"),
+                    "DelayedMatrix")
+    expect_s4_class(SummarizedExperiment::assay(droplet_li, "logcounts"),
+                    "DelayedMatrix")
     expect_setequal(SingleCellExperiment::reducedDimNames(droplet_li),
                     c("PCA", "UMAP", "TSNE"))
     expect_equal(colnames(SingleCellExperiment::reducedDim(droplet_li, "PCA")),
@@ -21,23 +26,29 @@ test_that("downloading droplet data works", {
                      SingleCellExperiment::reducedDim(droplet_li, "UMAP")))))
     expect_equal(unique(as.character(droplet_li$tissue)), "Large_Intestine")
 
-    ## Without reducedDims
+    ## Without reducedDims and processedCounts
     droplet <- TabulaMurisSenisDroplet(tissues = "Large_Intestine",
                                        processedCounts = FALSE,
                                        reducedDims = FALSE)
     expect_equal(length(SingleCellExperiment::reducedDims(droplet[[1]])), 0)
+    expect_setequal(SummarizedExperiment::assayNames(droplet[[1]]), "counts")
 })
 
 test_that("downloading facs data works", {
     facs <- TabulaMurisSenisFACS(tissues = "Aorta",
-                                 processedCounts = FALSE,
+                                 processedCounts = TRUE,
                                  reducedDims = TRUE)
     expect_is(facs, "list")
     expect_named(facs, "Aorta")
 
     facs_ao <- facs$Aorta
     expect_s4_class(facs_ao, "SingleCellExperiment")
-    expect_setequal(SummarizedExperiment::assayNames(facs_ao), "counts")
+    expect_setequal(SummarizedExperiment::assayNames(facs_ao),
+                    c("counts", "logcounts"))
+    expect_s4_class(SummarizedExperiment::assay(facs_ao, "counts"),
+                    "DelayedMatrix")
+    expect_s4_class(SummarizedExperiment::assay(facs_ao, "logcounts"),
+                    "DelayedMatrix")
     expect_setequal(SingleCellExperiment::reducedDimNames(facs_ao),
                     c("PCA", "UMAP", "TSNE"))
     expect_equal(colnames(SingleCellExperiment::reducedDim(facs_ao, "PCA")),
@@ -51,11 +62,12 @@ test_that("downloading facs data works", {
                      SingleCellExperiment::reducedDim(facs_ao, "UMAP")))))
     expect_equal(unique(as.character(facs_ao$tissue)), "Aorta")
 
-    ## Without reducedDims
+    ## Without reducedDims and processedCounts
     facs <- TabulaMurisSenisFACS(tissues = "Aorta",
                                  processedCounts = FALSE,
                                  reducedDims = FALSE)
     expect_equal(length(SingleCellExperiment::reducedDims(facs[[1]])), 0)
+    expect_setequal(SummarizedExperiment::assayNames(facs[[1]]), "counts")
 })
 
 test_that("downloading bulk data works", {
