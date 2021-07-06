@@ -1,8 +1,9 @@
-<!-- badges: start -->
-<!-- badges: end -->
+# TabulaMurisSenisData
 
-TabulaMurisSenisData
-====================
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/fmicompbio/TabulaMurisSenisData/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/fmicompbio/TabulaMurisSenisData/actions)
+<!-- badges: end -->
 
 This is an
 R/[ExperimentHub](https://bioconductor.org/packages/release/bioc/html/ExperimentHub.html)
@@ -23,8 +24,7 @@ devel version) or newer are required to use the package.
 library(TabulaMurisSenisData)
 ```
 
-Available data
-==============
+# Available data
 
 The package provides access to the [bulk RNA-seq
 data](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE132040) as
@@ -41,8 +41,7 @@ and
 [FACS](https://figshare.com/articles/dataset/Tabula_Muris_Senis_Data_Objects/12654728),
 respectively). No additional analysis has been performed on the data.
 
-Bulk RNA-seq
-------------
+## Bulk RNA-seq
 
 The bulk RNA-seq data is accessed via the `TabulaMurisSenisBulk()`
 function.
@@ -93,8 +92,7 @@ table(tms_bulk$organ)
     ## Small_Intestine          Spleen             WBC 
     ##              55              56              55
 
-Droplet scRNA-seq
------------------
+## Droplet scRNA-seq
 
 The droplet scRNA-seq data is accessed via the
 `TabulaMurisSenisDroplet()` function. By default, the full data set will
@@ -112,6 +110,8 @@ retrieved tissue (or ‘All’ for the full data set).
     ## see ?TabulaMurisSenisData and browseVignettes('TabulaMurisSenisData') for documentation
 
     ## loading from cache
+
+    ## require("rhdf5")
 
     ## see ?TabulaMurisSenisData and browseVignettes('TabulaMurisSenisData') for documentation
 
@@ -159,8 +159,7 @@ more details on how to recreate the plot below from the provided data).
 
 ![](inst/images/droplet-umap.png)
 
-FACS scRNA-seq
---------------
+## FACS scRNA-seq
 
 The FACS scRNA-seq data is accessed via the `TabulaMurisSenisFACS()`
 function. As for the droplet dat, the full data set will be returned by
@@ -222,8 +221,7 @@ listTabulaMurisSenisTissues(dataset = "FACS")
 
 ![](inst/images/facs-umap.png)
 
-Rendered processing reports
-===========================
+# Rendered processing reports
 
 The following reports provide detailed descriptions of how the data from
 the Tabula Muris Consortium was obtained and processed for inclusion in

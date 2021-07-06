@@ -4,10 +4,11 @@ output:
     variant: markdown_github
 ---
 
-<!-- badges: start -->
-<!-- badges: end -->
-
 # TabulaMurisSenisData 
+
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/fmicompbio/TabulaMurisSenisData/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/fmicompbio/TabulaMurisSenisData/actions)
+<!-- badges: end -->
 
 This is an R/[ExperimentHub](https://bioconductor.org/packages/release/bioc/html/ExperimentHub.html) package providing easy access to bulk and single-cell RNA-seq data from the [Tabula Muris Senis](https://tabula-muris-senis.ds.czbiohub.org/) project. 
 The package is under submission to Bioconductor. 

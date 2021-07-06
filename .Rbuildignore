@@ -11,3 +11,4 @@ inst/scripts/facs-csvs
 inst/scripts/facs-raw-data
 inst/scripts/TabulaMurisSenisData
 inst/scripts/*.html
+^\.github$
