@@ -197,6 +197,57 @@ Optionally, we can configure the `initial` set to start the app in the desired c
 initial <- list()
 
 ################################################################################
+# (Compact) Settings for Reduced dimension plot 1
+################################################################################
+
+initial[["ReducedDimensionPlot1"]] <- new(
+    "ReducedDimensionPlot", 
+    
+    DataBoxOpen = TRUE, 
+    Type = "UMAP", 
+    
+    VisualBoxOpen = TRUE, 
+    ColorBy = "Feature name", 
+    ColorByFeatureName = "Col1a1", 
+    ColorByFeatureSource = "RowDataTable1", 
+    ColorByFeatureDynamicSource = FALSE
+)
+
+################################################################################
+# (Compact) Settings for Row data table 1
+################################################################################
+
+initial[["RowDataTable1"]] <- new(
+    "RowDataTable", 
+    Selected = "Col1a1", 
+    Search = "Col1"
+)
+    
+################################################################################
+# (Compact) Settings for Feature assay plot 1
+################################################################################
+
+initial[["FeatureAssayPlot1"]] <- new(
+    "FeatureAssayPlot", 
+    
+    DataBoxOpen = TRUE, 
+    Assay = "logcounts", 
+    XAxis = "Column data", 
+    XAxisColumnData = "tissue", 
+    YAxisFeatureName = "Col1a1", 
+    YAxisFeatureSource = "RowDataTable1"
+)
+
+```
+
+<details>
+<br>
+<summary>Click here to display the complete configuration chunk<br><br></summary>
+
+```{r eval=FALSE}
+initial <- list()
+
+################################################################################
 # Settings for Reduced dimension plot 1
 ################################################################################
 
@@ -271,6 +322,12 @@ initial[["FeatureAssayPlot1"]] <- new("FeatureAssayPlot", Assay = "logcounts", X
 
 initial
 ```
+
+<br>
+
+</details>
+
+`iSEE` can then be launched with the following command:
 
 ```{r eval=FALSE}
 iSEE(sce_all_facs, initial = initial)
