@@ -333,6 +333,10 @@ initial
 iSEE(sce_all_facs, initial = initial)
 ```
 
+```{r echo=FALSE, fig.cap="Screenshot of the iSEE app running on the FACS single cell dataset", out.width='100%'}
+knitr::include_graphics("ss_iSEE_facsdataset.png")
+```
+
 Note that these lengthy configuration options can be readily exported by clicking on the dedicated button "Display panel settings" in `iSEE` - we can do that anytime after we are done designing the configuration using the app interface.
 
 # Session info {-}
