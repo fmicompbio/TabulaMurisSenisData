@@ -7,7 +7,8 @@
 TabulaMurisSenisFACS(
   tissues = "All",
   processedCounts = FALSE,
-  reducedDims = TRUE
+  reducedDims = TRUE,
+  infoOnly = FALSE
 )
 }
 \arguments{
@@ -21,10 +22,14 @@ counts in addition to the raw counts in the SingleCellExperiment object.}
 \item{reducedDims}{Logical scalar. If \code{TRUE}, include the PCA, tSNE
 and UMAP representations in the SingleCellExperiment object (the tSNE
 representation is not available for the full dataset ('All' tissue)).}
+
+\item{infoOnly}{Logical scalar. If \code{TRUE}, only print the total size
+of the files that will be downloaded to and/or retrieved from the cache.}
 }
 \value{
-A named list of \linkS4class{SingleCellExperiment} objects (one
-  per tissue requested via \code{tissues}).
+If \code{infoOnly} is \code{FALSE}, returns a named list of
+  \linkS4class{SingleCellExperiment} objects (one per tissue requested
+  via \code{tissues}).
 }
 \description{
 Access the FACS (Smart-Seq2) RNA-seq data from the Tabula Muris Senis

@@ -27,7 +27,9 @@ Imports:
     ExperimentHub,
     SingleCellExperiment,
     HDF5Array,
-    SummarizedExperiment
+    SummarizedExperiment,
+    gdata,
+    AnnotationHub
 URL: https://github.com/fmicompbio/TabulaMurisSenisData
 BugReports: https://github.com/fmicompbio/TabulaMurisSenisData/issues
 VignetteBuilder: knitr

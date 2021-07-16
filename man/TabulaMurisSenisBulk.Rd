@@ -4,11 +4,15 @@
 \alias{TabulaMurisSenisBulk}
 \title{Access the Tabula Muris Senis bulk RNA-seq data}
 \usage{
-TabulaMurisSenisBulk()
+TabulaMurisSenisBulk(infoOnly = FALSE)
+}
+\arguments{
+\item{infoOnly}{Logical scalar. If \code{TRUE}, only print the total size
+of the files that will be downloaded to and/or retrieved from the cache.}
 }
 \value{
-A \linkS4class{SingleCellExperiment} object with a single matrix of
-  counts.
+If \code{infoOnly} is \code{FALSE}, return a
+  \linkS4class{SingleCellExperiment} object with a single matrix of counts.
 }
 \description{
 Access the bulk RNA-seq data from the Tabula Muris Senis consortium.
