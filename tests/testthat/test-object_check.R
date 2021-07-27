@@ -1,4 +1,7 @@
 test_that("downloading droplet data works", {
+    expect_null(TabulaMurisSenisDroplet(tissues = "Large_Intestine",
+                                        infoOnly = TRUE)[[1]])
+
     droplet <- TabulaMurisSenisDroplet(tissues = "Large_Intestine",
                                        processedCounts = TRUE,
                                        reducedDims = TRUE)
@@ -35,6 +38,9 @@ test_that("downloading droplet data works", {
 })
 
 test_that("downloading facs data works", {
+    expect_null(TabulaMurisSenisFACS(tissues = "Aorta",
+                                     infoOnly = TRUE)[[1]])
+
     facs <- TabulaMurisSenisFACS(tissues = "Aorta",
                                  processedCounts = TRUE,
                                  reducedDims = TRUE)
@@ -71,6 +77,8 @@ test_that("downloading facs data works", {
 })
 
 test_that("downloading bulk data works", {
+    expect_null(TabulaMurisSenisBulk(infoOnly = TRUE))
+
     bulk <- TabulaMurisSenisBulk()
 
     expect_s4_class(bulk, "SingleCellExperiment")

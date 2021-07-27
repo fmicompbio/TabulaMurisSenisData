@@ -43,7 +43,12 @@ and use within the Bioconductor ecosystem.
 
 # Bulk RNA-seq data
 
+The bulk RNA-seq data can be accessed via the `TabulaMurisSenisBulk()` 
+function. By setting the argument `infoOnly` to `TRUE`, we can get information 
+about the size of the data set before downloading it. 
+
 ```{r}
+TabulaMurisSenisBulk(infoOnly = TRUE)
 tms_bulk <- TabulaMurisSenisBulk()
 tms_bulk
 ```
@@ -68,7 +73,11 @@ We list the available tissues.
 listTabulaMurisSenisTissues(dataset = "Droplet")
 ```
 
+As for the bulk data, we can print the size of the data set before 
+downloading it. 
+
 ```{r}
+TabulaMurisSenisDroplet(tissues = "All", infoOnly = TRUE)
 tms_droplet <- TabulaMurisSenisDroplet(tissues = "All")
 tms_droplet
 ```
@@ -117,7 +126,10 @@ We list the available tissues.
 listTabulaMurisSenisTissues(dataset = "FACS")
 ```
 
+Also here, we can print the size of the data set before downloading it. 
+
 ```{r}
+TabulaMurisSenisFACS(tissues = "All", infoOnly = TRUE)
 tms_facs <- TabulaMurisSenisFACS(tissues = "All")
 tms_facs
 ```
