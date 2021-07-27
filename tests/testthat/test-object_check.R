@@ -1,4 +1,7 @@
 test_that("downloading droplet data works", {
+    expect_null(TabulaMurisSenisDroplet(tissues = "Large_Intestine",
+                                        infoOnly = TRUE)[[1]])
+
     droplet <- TabulaMurisSenisDroplet(tissues = "Large_Intestine",
                                        processedCounts = TRUE,
                                        reducedDims = TRUE)
@@ -25,6 +28,17 @@ test_that("downloading droplet data works", {
                  paste0("UMAP", seq_len(ncol(
                      SingleCellExperiment::reducedDim(droplet_li, "UMAP")))))
     expect_equal(unique(as.character(droplet_li$tissue)), "Large_Intestine")
+    expect_equal(unique(as.character(droplet_li$method)), "droplet")
+
+    ## Test that processed counts correspond to raw counts
+    cts <- as.matrix(t(assay(droplet_li, "counts")))
+    proc_counts <- log2(cts/rowSums(cts) * 1e4 + 1)
+    proc_counts <- t(t(proc_counts)/apply(proc_counts, 2, sd))
+    proc_counts[is.na(proc_counts)] <- 0
+    proc_counts[proc_counts > 10] <- 10
+    expect_true(
+        max(abs(proc_counts - as.matrix(t(assay(droplet_li, "logcounts"))))) < 1e-5
+    )
 
     ## Without reducedDims and processedCounts
     droplet <- TabulaMurisSenisDroplet(tissues = "Large_Intestine",
@@ -35,6 +49,9 @@ test_that("downloading droplet data works", {
 })
 
 test_that("downloading facs data works", {
+    expect_null(TabulaMurisSenisFACS(tissues = "Aorta",
+                                     infoOnly = TRUE)[[1]])
+
     facs <- TabulaMurisSenisFACS(tissues = "Aorta",
                                  processedCounts = TRUE,
                                  reducedDims = TRUE)
@@ -61,6 +78,17 @@ test_that("downloading facs data works", {
                  paste0("UMAP", seq_len(ncol(
                      SingleCellExperiment::reducedDim(facs_ao, "UMAP")))))
     expect_equal(unique(as.character(facs_ao$tissue)), "Aorta")
+    expect_equal(unique(as.character(facs_ao$method)), "facs")
+
+    ## Test that processed counts correspond to raw counts
+    cts <- as.matrix(t(assay(facs_ao, "counts")))
+    proc_counts <- log2(cts/rowSums(cts) * 1e4 + 1)
+    proc_counts <- t(t(proc_counts)/apply(proc_counts, 2, sd))
+    proc_counts[is.na(proc_counts)] <- 0
+    proc_counts[proc_counts > 10] <- 10
+    expect_true(
+        max(abs(proc_counts - as.matrix(t(assay(facs_ao, "logcounts"))))) < 1e-5
+    )
 
     ## Without reducedDims and processedCounts
     facs <- TabulaMurisSenisFACS(tissues = "Aorta",
@@ -71,6 +99,8 @@ test_that("downloading facs data works", {
 })
 
 test_that("downloading bulk data works", {
+    expect_null(TabulaMurisSenisBulk(infoOnly = TRUE))
+
     bulk <- TabulaMurisSenisBulk()
 
     expect_s4_class(bulk, "SingleCellExperiment")

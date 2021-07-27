@@ -8,8 +8,12 @@
 #' gene annotations from GENCODE vM19 were downloaded and included in the
 #' rowRanges of the object.
 #'
-#' @return A \linkS4class{SingleCellExperiment} object with a single matrix of
-#'   counts.
+#' @param infoOnly Logical scalar. If \code{TRUE}, only print the total size
+#'   of the files that will be downloaded to and/or retrieved from the cache.
+#'
+#' @return If \code{infoOnly} is \code{FALSE}, return a
+#'   \linkS4class{SingleCellExperiment} object with a single matrix of counts.
+#'   Otherwise, return `NULL`.
 #'
 #' @author Charlotte Soneson
 #'
@@ -28,17 +32,33 @@
 #' @export
 #'
 #' @importFrom ExperimentHub ExperimentHub
+#' @importFrom AnnotationHub getInfoOnIds
 #' @importFrom SingleCellExperiment SingleCellExperiment
+#' @importFrom gdata humanReadable
 #'
-TabulaMurisSenisBulk <- function() {
+TabulaMurisSenisBulk <- function(infoOnly = FALSE) {
     hub <- ExperimentHub::ExperimentHub()
     host <- file.path("TabulaMurisSenisData", "tabula-muris-senis-bulk")
-    counts <- hub[hub$rdatapath == file.path(host, "counts.rds")][[1]]
-    coldata <- hub[hub$rdatapath == file.path(host, "coldata.rds")][[1]]
-    rowranges <- hub[hub$rdatapath == file.path(host, "rowranges.rds")][[1]]
-    SingleCellExperiment::SingleCellExperiment(
-        assays = list(counts = counts),
-        rowRanges = rowranges,
-        colData = coldata
-    )
+
+    counts <- .getHubRecord(hub = hub, host = host, tissue = "",
+                            suffix = "counts.rds")
+    coldata <- .getHubRecord(hub = hub, host = host, tissue = "",
+                             suffix = "coldata.rds")
+    rowranges <- .getHubRecord(hub = hub, host = host, tissue = "",
+                               suffix = "rowranges.rds")
+
+    if (infoOnly) {
+        totalSize <-
+            as.numeric(AnnotationHub::getInfoOnIds(counts)$file_size) +
+            as.numeric(AnnotationHub::getInfoOnIds(coldata)$file_size) +
+            as.numeric(AnnotationHub::getInfoOnIds(rowranges)$file_size)
+        message("Total download size: ",
+                gdata::humanReadable(totalSize))
+    } else {
+        SingleCellExperiment::SingleCellExperiment(
+            assays = list(counts = counts[[1]]),
+            rowRanges = rowranges[[1]],
+            colData = coldata[[1]]
+        )
+    }
 }
