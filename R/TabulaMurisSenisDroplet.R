@@ -11,7 +11,7 @@
 #'
 #' @return If \code{infoOnly} is \code{FALSE}, returns a named list of
 #'   \linkS4class{SingleCellExperiment} objects (one per tissue requested
-#'   via \code{tissues}).
+#'   via \code{tissues}). Otherwise, each element in the list is `NULL`.
 #'
 #' @param tissues A character vector with the tissues to retrieve objects for.
 #'   A list of available tissues can be obtained using
