@@ -48,7 +48,7 @@ function. By setting the argument `infoOnly` to `TRUE`, we can get information
 about the size of the data set before downloading it. 
 
 ```{r}
-TabulaMurisSenisBulk(infoOnly = TRUE)
+tmp <- TabulaMurisSenisBulk(infoOnly = TRUE)
 tms_bulk <- TabulaMurisSenisBulk()
 tms_bulk
 ```
@@ -77,7 +77,7 @@ As for the bulk data, we can print the size of the data set before
 downloading it. 
 
 ```{r}
-TabulaMurisSenisDroplet(tissues = "All", infoOnly = TRUE)
+tmp <- TabulaMurisSenisDroplet(tissues = "All", infoOnly = TRUE)
 tms_droplet <- TabulaMurisSenisDroplet(tissues = "All")
 tms_droplet
 ```
@@ -129,7 +129,7 @@ listTabulaMurisSenisTissues(dataset = "FACS")
 Also here, we can print the size of the data set before downloading it. 
 
 ```{r}
-TabulaMurisSenisFACS(tissues = "All", infoOnly = TRUE)
+tmp <- TabulaMurisSenisFACS(tissues = "All", infoOnly = TRUE)
 tms_facs <- TabulaMurisSenisFACS(tissues = "All")
 tms_facs
 ```
@@ -175,7 +175,7 @@ A natural companion to this data structure is the `r Biocpkg("iSEE")` package, w
 Any analysis steps should be performed in advance before calling `iSEE`, and since these datasets can be quite big, the operations can be time consuming, and/or require a considerable amount of resources.
 
 ```{r}
-sce_all_facs <- TabulaMurisSenisFACS(tissues = "All", processedCounts = TRUE)[["All"]]
+sce_all_facs <- TabulaMurisSenisFACS(tissues = "All", processedCounts = TRUE)$All
 sce_all_facs
 ```
 
@@ -190,11 +190,11 @@ If desired, additional processing steps can be performed on the `sce_all_facs` -
 Once these steps are completed, launching `iSEE` is as easy as 
 
 ```{r include=FALSE}
-library("iSEE")
+library(iSEE)
 ```
 
 ```{r launchisee, eval=FALSE}
-library("iSEE")
+library(iSEE)
 iSEE(sce_all_facs)
 ```
 
@@ -214,10 +214,8 @@ initial <- list()
 
 initial[["ReducedDimensionPlot1"]] <- new(
     "ReducedDimensionPlot", 
-    
     DataBoxOpen = TRUE, 
     Type = "UMAP", 
-    
     VisualBoxOpen = TRUE, 
     ColorBy = "Feature name", 
     ColorByFeatureName = "Col1a1", 
@@ -241,7 +239,6 @@ initial[["RowDataTable1"]] <- new(
 
 initial[["FeatureAssayPlot1"]] <- new(
     "FeatureAssayPlot", 
-    
     DataBoxOpen = TRUE, 
     Assay = "logcounts", 
     XAxis = "Column data", 
