@@ -13,7 +13,7 @@
 #'
 #' @return If \code{infoOnly} is \code{FALSE}, return a
 #'   \linkS4class{SingleCellExperiment} object with a single matrix of counts.
-#'   Otherwise, returns `NULL`.
+#'   Otherwise, return `NULL`.
 #'
 #' @author Charlotte Soneson
 #'
