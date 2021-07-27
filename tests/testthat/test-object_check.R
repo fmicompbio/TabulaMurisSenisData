@@ -33,7 +33,7 @@ test_that("downloading droplet data works", {
     ## Test that processed counts correspond to raw counts
     cts <- as.matrix(t(assay(droplet_li, "counts")))
     proc_counts <- log2(cts/rowSums(cts) * 1e4 + 1)
-    proc_counts <- t(t(proc_counts)/sqrt(colVars(proc_counts)))
+    proc_counts <- t(t(proc_counts)/apply(proc_counts, 2, sd))
     proc_counts[is.na(proc_counts)] <- 0
     proc_counts[proc_counts > 10] <- 10
     expect_true(
@@ -83,7 +83,7 @@ test_that("downloading facs data works", {
     ## Test that processed counts correspond to raw counts
     cts <- as.matrix(t(assay(facs_ao, "counts")))
     proc_counts <- log2(cts/rowSums(cts) * 1e4 + 1)
-    proc_counts <- t(t(proc_counts)/sqrt(colVars(proc_counts)))
+    proc_counts <- t(t(proc_counts)/apply(proc_counts, 2, sd))
     proc_counts[is.na(proc_counts)] <- 0
     proc_counts[proc_counts > 10] <- 10
     expect_true(
