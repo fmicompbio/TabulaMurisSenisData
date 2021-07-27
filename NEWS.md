@@ -1,3 +1,7 @@
+# TabulaMurisSenisData 0.99.1
+
+* Add infoOnly argument to get details about download size
+
 # TabulaMurisSenisData 0.99.0
 
 * Add documentation
