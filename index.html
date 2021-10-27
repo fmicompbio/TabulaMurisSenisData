@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">TabulaMurisSenisData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -55,7 +55,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/fmicompbio/TabulaMurisSenisData/">
+  <a href="https://github.com/fmicompbio/TabulaMurisSenisData/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -73,9 +73,9 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-<div id="tabulamurissenisdata" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#tabulamurissenisdata" class="anchor" aria-hidden="true"></a>TabulaMurisSenisData</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="tabulamurissenisdata">TabulaMurisSenisData<a class="anchor" aria-label="anchor" href="#tabulamurissenisdata"></a>
+</h1></div>
 <!-- badges: start -->
 
 <p>This is an R/<a href="https://bioconductor.org/packages/release/bioc/html/ExperimentHub.html" class="external-link">ExperimentHub</a> package providing easy access to bulk and single-cell RNA-seq data from the <a href="https://tabula-muris-senis.ds.czbiohub.org/" class="external-link">Tabula Muris Senis</a> project. The package is under submission to Bioconductor. For now, it can be installed from this GitHub repository using the <a href="https://cran.r-project.org/package=devtools" class="external-link">devtools</a> package:</p>
@@ -85,13 +85,13 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/fmicompbio/TabulaMurisSenisData" class="external-link">TabulaMurisSenisData</a></span><span class="op">)</span></code></pre></div>
 </div>
-<div id="available-data" class="section level1">
-<h1 class="hasAnchor">
-<a href="#available-data" class="anchor" aria-hidden="true"></a>Available data</h1>
+<div class="section level1">
+<h1 id="available-data">Available data<a class="anchor" aria-label="anchor" href="#available-data"></a>
+</h1>
 <p>The package provides access to the <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE132040" class="external-link">bulk RNA-seq data</a> as well as the <a href="https://figshare.com/articles/dataset/Processed_files_to_use_with_scanpy_/8273102?file=23938934" class="external-link">droplet</a> and <a href="https://figshare.com/articles/dataset/Processed_files_to_use_with_scanpy_/8273102?file=23937842" class="external-link">FACS</a> single-cell RNA-seq data sets from the Tabula Muris Senis project. Each data set is returned as a SingleCellExperiment object. For the single-cell data sets, we also provide separate objects for the individual tissues (<a href="https://figshare.com/articles/dataset/Tabula_Muris_Senis_Data_Objects/12654728" class="external-link">droplet</a> and <a href="https://figshare.com/articles/dataset/Tabula_Muris_Senis_Data_Objects/12654728" class="external-link">FACS</a>, respectively). No additional analysis has been performed on the data.</p>
-<div id="bulk-rna-seq" class="section level2">
-<h2 class="hasAnchor">
-<a href="#bulk-rna-seq" class="anchor" aria-hidden="true"></a>Bulk RNA-seq</h2>
+<div class="section level2">
+<h2 id="bulk-rna-seq">Bulk RNA-seq<a class="anchor" aria-label="anchor" href="#bulk-rna-seq"></a>
+</h2>
 <p>The bulk RNA-seq data is accessed via the <code><a href="reference/TabulaMurisSenisBulk.html">TabulaMurisSenisBulk()</a></code> function.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">tms_bulk</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/TabulaMurisSenisBulk.html">TabulaMurisSenisBulk</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
@@ -134,9 +134,9 @@
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Small_Intestine          Spleen             WBC </span></span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="do">##              55              56              55</span></span></code></pre></div>
 </div>
-<div id="droplet-scrna-seq" class="section level2">
-<h2 class="hasAnchor">
-<a href="#droplet-scrna-seq" class="anchor" aria-hidden="true"></a>Droplet scRNA-seq</h2>
+<div class="section level2">
+<h2 id="droplet-scrna-seq">Droplet scRNA-seq<a class="anchor" aria-label="anchor" href="#droplet-scrna-seq"></a>
+</h2>
 <p>The droplet scRNA-seq data is accessed via the <code><a href="reference/TabulaMurisSenisDroplet.html">TabulaMurisSenisDroplet()</a></code> function. By default, the full data set will be returned. Data from each individual tissue can also be obtained by specifying the <code>tissues</code> argument appropriately. Note that the return value from this function is always a named list, with one element per retrieved tissue (or ‘All’ for the full data set).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">tms_droplet</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/TabulaMurisSenisDroplet.html">TabulaMurisSenisDroplet</a></span><span class="op">(</span>tissues <span class="op">=</span> <span class="st">"All"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
@@ -187,9 +187,9 @@
 <p>The returned objects contain also the reduced dimension representations generated by the Tabula Muris Senis consortium (see the vignette for more details on how to recreate the plot below from the provided data).</p>
 <p><img src="inst/images/droplet-umap.png"></p>
 </div>
-<div id="facs-scrna-seq" class="section level2">
-<h2 class="hasAnchor">
-<a href="#facs-scrna-seq" class="anchor" aria-hidden="true"></a>FACS scRNA-seq</h2>
+<div class="section level2">
+<h2 id="facs-scrna-seq">FACS scRNA-seq<a class="anchor" aria-label="anchor" href="#facs-scrna-seq"></a>
+</h2>
 <p>The FACS scRNA-seq data is accessed via the <code><a href="reference/TabulaMurisSenisFACS.html">TabulaMurisSenisFACS()</a></code> function. As for the droplet dat, the full data set will be returned by default, but individual tissue data sets are also available.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">tms_facs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/TabulaMurisSenisFACS.html">TabulaMurisSenisFACS</a></span><span class="op">(</span>tissues <span class="op">=</span> <span class="st">"All"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
@@ -242,9 +242,9 @@
 <p><img src="inst/images/facs-umap.png"></p>
 </div>
 </div>
-<div id="rendered-processing-reports" class="section level1">
-<h1 class="hasAnchor">
-<a href="#rendered-processing-reports" class="anchor" aria-hidden="true"></a>Rendered processing reports</h1>
+<div class="section level1">
+<h1 id="rendered-processing-reports">Rendered processing reports<a class="anchor" aria-label="anchor" href="#rendered-processing-reports"></a>
+</h1>
 <p>The following reports provide detailed descriptions of how the data from the Tabula Muris Consortium was obtained and processed for inclusion in this package.</p>
 <ul>
 <li><a href="https://www.dropbox.com/s/4c8jplihh1nyj4u/make-data-tabula-muris-senis-bulk.html?dl=0" class="external-link">bulk data</a></li>
@@ -259,10 +259,9 @@
     <div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/fmicompbio/TabulaMurisSenisData/">https://​github.com/​fmicompbio/​TabulaMurisSenisData/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/fmicompbio/TabulaMurisSenisData/issues">https://​github.com/​fmicompbio/​TabulaMurisSenisData/​issues</a>
-</li>
+<li><a href="https://www.bioconductor.org/packages/TabulaMurisSenisData" class="external-link">View on Bioconductor</a></li>
+<li><a href="https://github.com/fmicompbio/TabulaMurisSenisData/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/fmicompbio/TabulaMurisSenisData/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
@@ -270,7 +269,7 @@
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
 
@@ -278,10 +277,10 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Charlotte Soneson <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-3833-2169" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Dania Machlab <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-2578-6930" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Federico Marini <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-3252-7758" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Stefania Astrologo <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-4845-2802" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Charlotte Soneson <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-3833-2169" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Dania Machlab <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-2578-6930" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Federico Marini <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-3252-7758" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Stefania Astrologo <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-4845-2802" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
 
@@ -303,7 +302,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
 </div>
 
       </footer>
