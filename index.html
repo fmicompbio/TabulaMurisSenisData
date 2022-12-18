@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">TabulaMurisSenisData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.0</span>
       </span>
     </div>
 
@@ -80,10 +80,10 @@
 
 <p>This is an R/<a href="https://bioconductor.org/packages/release/bioc/html/ExperimentHub.html" class="external-link">ExperimentHub</a> package providing easy access to bulk and single-cell RNA-seq data from the <a href="https://tabula-muris-senis.ds.czbiohub.org/" class="external-link">Tabula Muris Senis</a> project. The package is under submission to Bioconductor. For now, it can be installed from this GitHub repository using the <a href="https://cran.r-project.org/package=devtools" class="external-link">devtools</a> package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"fmicompbio/TabulaMurisSenisData"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"fmicompbio/TabulaMurisSenisData"</span><span class="op">)</span></span></code></pre></div>
 <p>Note that R version 4.1 or newer, and Bioconductor release 3.14 (current devel version) or newer are required to use the package.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/fmicompbio/TabulaMurisSenisData" class="external-link">TabulaMurisSenisData</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/fmicompbio/TabulaMurisSenisData" class="external-link">TabulaMurisSenisData</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level1">
 <h1 id="available-data">Available data<a class="anchor" aria-label="anchor" href="#available-data"></a>
@@ -94,7 +94,7 @@
 </h2>
 <p>The bulk RNA-seq data is accessed via the <code><a href="reference/TabulaMurisSenisBulk.html">TabulaMurisSenisBulk()</a></code> function.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="op">(</span><span class="va">tms_bulk</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/TabulaMurisSenisBulk.html">TabulaMurisSenisBulk</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">tms_bulk</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/TabulaMurisSenisBulk.html">TabulaMurisSenisBulk</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## snapshotDate(): 2021-06-21</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="do">## see ?TabulaMurisSenisData and browseVignettes('TabulaMurisSenisData') for documentation</span></span>
@@ -122,8 +122,8 @@
 <span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="do">## mainExpName: NULL</span></span>
 <span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="do">## altExpNames(0):</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## List available tissues</span>
-<span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">tms_bulk</span><span class="op">$</span><span class="va">organ</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## List available tissues</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">tms_bulk</span><span class="op">$</span><span class="va">organ</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="do">##             BAT            Bone           Brain             GAT           Heart </span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="do">##              54              55              56              56              54 </span></span>
@@ -139,7 +139,7 @@
 </h2>
 <p>The droplet scRNA-seq data is accessed via the <code><a href="reference/TabulaMurisSenisDroplet.html">TabulaMurisSenisDroplet()</a></code> function. By default, the full data set will be returned. Data from each individual tissue can also be obtained by specifying the <code>tissues</code> argument appropriately. Note that the return value from this function is always a named list, with one element per retrieved tissue (or ‘All’ for the full data set).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="op">(</span><span class="va">tms_droplet</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/TabulaMurisSenisDroplet.html">TabulaMurisSenisDroplet</a></span><span class="op">(</span>tissues <span class="op">=</span> <span class="st">"All"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">tms_droplet</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/TabulaMurisSenisDroplet.html">TabulaMurisSenisDroplet</a></span><span class="op">(</span>tissues <span class="op">=</span> <span class="st">"All"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## snapshotDate(): 2021-06-21</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="do">## see ?TabulaMurisSenisData and browseVignettes('TabulaMurisSenisData') for documentation</span></span>
@@ -178,7 +178,7 @@
 <span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="do">## mainExpName: NULL</span></span>
 <span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a><span class="do">## altExpNames(0):</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/listTabulaMurisSenisTissues.html">listTabulaMurisSenisTissues</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="st">"Droplet"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/listTabulaMurisSenisTissues.html">listTabulaMurisSenisTissues</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="st">"Droplet"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] "All"             "Large_Intestine" "Pancreas"        "Trachea"        </span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="do">##  [5] "Skin"            "Fat"             "Thymus"          "Liver"          </span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="do">##  [9] "Heart_and_Aorta" "Mammary_Gland"   "Bladder"         "Lung"           </span></span>
@@ -192,7 +192,7 @@
 </h2>
 <p>The FACS scRNA-seq data is accessed via the <code><a href="reference/TabulaMurisSenisFACS.html">TabulaMurisSenisFACS()</a></code> function. As for the droplet dat, the full data set will be returned by default, but individual tissue data sets are also available.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="op">(</span><span class="va">tms_facs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/TabulaMurisSenisFACS.html">TabulaMurisSenisFACS</a></span><span class="op">(</span>tissues <span class="op">=</span> <span class="st">"All"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">tms_facs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/TabulaMurisSenisFACS.html">TabulaMurisSenisFACS</a></span><span class="op">(</span>tissues <span class="op">=</span> <span class="st">"All"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">## snapshotDate(): 2021-06-21</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="do">## see ?TabulaMurisSenisData and browseVignettes('TabulaMurisSenisData') for documentation</span></span>
@@ -230,7 +230,7 @@
 <span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="do">## mainExpName: NULL</span></span>
 <span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a><span class="do">## altExpNames(0):</span></span></code></pre></div>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/listTabulaMurisSenisTissues.html">listTabulaMurisSenisTissues</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="st">"FACS"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/listTabulaMurisSenisTissues.html">listTabulaMurisSenisTissues</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="st">"FACS"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] "All"               "Aorta"             "Kidney"           </span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="do">##  [4] "Diaphragm"         "BAT"               "Spleen"           </span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="do">##  [7] "Limb_Muscle"       "Liver"             "MAT"              </span></span>
@@ -274,6 +274,13 @@
 </div>
 
 
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing TabulaMurisSenisData</a></li>
+</ul>
+</div>
+
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
@@ -302,7 +309,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer>

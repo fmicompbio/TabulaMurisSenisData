@@ -18,7 +18,7 @@ consortium."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TabulaMurisSenisData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.0</span>
       </span>
     </div>
 
@@ -57,35 +57,46 @@ consortium."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
 consortium.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">TabulaMurisSenisFACS</span><span class="op">(</span>
-  tissues <span class="op">=</span> <span class="st">"All"</span>,
-  processedCounts <span class="op">=</span> <span class="cn">FALSE</span>,
-  reducedDims <span class="op">=</span> <span class="cn">TRUE</span>,
-  infoOnly <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">TabulaMurisSenisFACS</span><span class="op">(</span></span>
+<span>  tissues <span class="op">=</span> <span class="st">"All"</span>,</span>
+<span>  processedCounts <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  reducedDims <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  infoOnly <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>tissues</dt>
 <dd><p>A character vector with the tissues to retrieve objects for.
 A list of available tissues can be obtained using
 <code>listTabulaMurisSenisTissues("FACS")</code>.</p></dd>
+
+
 <dt>processedCounts</dt>
 <dd><p>Logical scalar. If <code>TRUE</code>, include the processed
 counts in addition to the raw counts in the SingleCellExperiment object.</p></dd>
+
+
 <dt>reducedDims</dt>
 <dd><p>Logical scalar. If <code>TRUE</code>, include the PCA, tSNE
 and UMAP representations in the SingleCellExperiment object (the tSNE
 representation is not available for the full dataset ('All' tissue)).</p></dd>
+
+
 <dt>infoOnly</dt>
 <dd><p>Logical scalar. If <code>TRUE</code>, only print the total size
 of the files that will be downloaded to and/or retrieved from the cache.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>If <code>infoOnly</code> is <code>FALSE</code>, returns a named list of
-SingleCellExperiment objects (one per tissue requested
+    
+
+<p>If <code>infoOnly</code> is <code>FALSE</code>, returns a named list of</p>
+<p></p>
+<p>SingleCellExperiment objects (one per tissue requested
   via <code>tissues</code>). Otherwise, each element in the list is `NULL`.</p>
     </div>
     <div id="details">
@@ -107,14 +118,13 @@ characterizes ageing tissues in the mouse. Nature 583:590–595.</p>
     <h2>Author</h2>
     <p>Charlotte Soneson</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">sce</span> <span class="op">&lt;-</span> <span class="fu">TabulaMurisSenisFACS</span><span class="op">(</span>tissues <span class="op">=</span> <span class="st">"All"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">sce</span> <span class="op">&lt;-</span> <span class="fu">TabulaMurisSenisFACS</span><span class="op">(</span>tissues <span class="op">=</span> <span class="st">"All"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -129,7 +139,7 @@ characterizes ageing tissues in the mouse. Nature 583:590–595.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer></div>
