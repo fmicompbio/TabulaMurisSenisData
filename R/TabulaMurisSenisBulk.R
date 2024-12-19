@@ -12,8 +12,8 @@
 #'   of the files that will be downloaded to and/or retrieved from the cache.
 #'
 #' @return If \code{infoOnly} is \code{FALSE}, return a
-#'   \linkS4class{SingleCellExperiment} object with a single matrix of counts.
-#'   Otherwise, return `NULL`.
+#'   \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+#'   object with a single matrix of counts. Otherwise, return `NULL`.
 #'
 #' @author Charlotte Soneson
 #'

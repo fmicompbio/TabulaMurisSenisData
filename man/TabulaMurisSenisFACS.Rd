@@ -28,8 +28,9 @@ of the files that will be downloaded to and/or retrieved from the cache.}
 }
 \value{
 If \code{infoOnly} is \code{FALSE}, returns a named list of
-  \linkS4class{SingleCellExperiment} objects (one per tissue requested
-  via \code{tissues}). Otherwise, each element in the list is `NULL`.
+  \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+  objects (one per tissue requested via \code{tissues}). Otherwise, each 
+  element in the list is `NULL`.
 }
 \description{
 Access the FACS (Smart-Seq2) RNA-seq data from the Tabula Muris Senis

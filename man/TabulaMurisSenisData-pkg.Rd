@@ -2,6 +2,8 @@
 % Please edit documentation in R/TabulaMurisSenisData-pkg.R
 \docType{package}
 \name{TabulaMurisSenisData-pkg}
+\alias{TabulaMurisSenisData}
+\alias{TabulaMurisSenisData-package}
 \alias{TabulaMurisSenisData-pkg}
 \title{TabulaMurisSenisData}
 \description{
@@ -18,3 +20,23 @@ characterizes ageing tissues in the mouse. Nature 583(7817): 590-595.
 Schaum et al (2019): The murine transcriptome reveals global aging nodes
 withorgan-specific phase and amplitude. bioRxiv doi:10.1101/662254
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/fmicompbio/TabulaMurisSenisData}
+  \item Report bugs at \url{https://github.com/fmicompbio/TabulaMurisSenisData/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Charlotte Soneson \email{charlottesoneson@gmail.com} (\href{https://orcid.org/0000-0003-3833-2169}{ORCID})
+
+Authors:
+\itemize{
+  \item Dania Machlab \email{dania.machlab@gmail.com} (\href{https://orcid.org/0000-0002-2578-6930}{ORCID})
+  \item Federico Marini \email{marinif@uni-mainz.de} (\href{https://orcid.org/0000-0003-3252-7758}{ORCID})
+  \item Stefania Astrologo \email{stefania.astrologo@gmail.com} (\href{https://orcid.org/0000-0002-4845-2802}{ORCID})
+}
+
+}
+\keyword{internal}
