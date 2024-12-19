@@ -14,5 +14,6 @@
 #' withorgan-specific phase and amplitude. bioRxiv doi:10.1101/662254
 #'
 #' @name TabulaMurisSenisData-pkg
-#' @docType package
-NULL
+#' @keywords internal
+"_PACKAGE"
+
