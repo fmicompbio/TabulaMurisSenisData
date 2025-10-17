@@ -13,6 +13,5 @@
 #' Schaum et al (2019): The murine transcriptome reveals global aging nodes
 #' withorgan-specific phase and amplitude. bioRxiv doi:10.1101/662254
 #'
-#' @name TabulaMurisSenisData-pkg
-#' @docType package
-NULL
+#' @keywords internal
+"_PACKAGE"
