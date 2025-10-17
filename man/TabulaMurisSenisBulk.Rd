@@ -12,8 +12,9 @@ of the files that will be downloaded to and/or retrieved from the cache.}
 }
 \value{
 If \code{infoOnly} is \code{FALSE}, return a
-  \linkS4class{SingleCellExperiment} object with a single matrix of counts.
-  Otherwise, returns `NULL`.
+  \code{\link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment}}
+  object with a single matrix of counts.
+  Otherwise, return `NULL`.
 }
 \description{
 Access the bulk RNA-seq data from the Tabula Muris Senis consortium.
