@@ -1,6 +1,6 @@
 pandoc: 3.8.1
 pkgdown: 2.1.3.9000
-pkgdown_sha: 34f217f67fb908fccaf55b0db07dae33322e7349
+pkgdown_sha: 3a19c44e3b41e2904669e8b9fb12507aa8adf3c7
 articles:
   TabulaMurisSenisData: TabulaMurisSenisData.html
-last_built: 2025-10-17T14:51Z
+last_built: 2025-10-29T19:43Z
